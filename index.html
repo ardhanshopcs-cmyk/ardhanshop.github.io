@@ -377,11 +377,14 @@
     <div class="form-container">
         <h2 id="grupModalTitle" style="color:var(--primary)">Promosikan Grup</h2><br>
         <input type="hidden" id="editGrupId">
-        <input type="file" id="grupInputImg"><br><br>
-        <div id="grupImgPreview"></div>
+        <div style="margin-bottom:15px">
+            <label style="font-size: 0.8rem; color: #94a3b8;">Foto Grup:</label>
+            <input type="file" id="grupInputImg" accept="image/*">
+            <div id="grupImgPreview" style="margin-top:10px;"></div>
+        </div>
         <input type="text" id="grupInputName" placeholder="Nama Grup"><br><br>
         <input type="text" id="grupInputLink" placeholder="Link Grup (https://...)"><br><br>
-        <textarea id="grupInputDesc" placeholder="Deskripsi Singkat"></textarea><br><br>
+        <textarea id="grupInputDesc" placeholder="Deskripsi Singkat Grup"></textarea><br><br>
         <button id="btnSaveGrup" class="btn-order" onclick="saveGrup()">DAFTARKAN GRUP</button>
         <p style="text-align:center; color:var(--error); margin-top:15px; cursor:pointer;" onclick="closeModals()">Batal</p>
     </div>
@@ -430,7 +433,6 @@
         const wrapper = document.getElementById('bannerWrapper');
         if(imgList.length > 0) {
             wrapper.innerHTML = imgList.map(img => `<img src="${img}">`).join('');
-            // Di sini kamu bisa memanggil ulang initSlider() jika diperlukan
         }
     }
 
@@ -655,9 +657,20 @@
         btn.classList.add('active');
         document.querySelectorAll('.view-section').forEach(s => s.classList.remove('active'));
         const fab = document.getElementById('fabAdd');
-        if(view === 'topup') { document.getElementById('sectionTopup').classList.add('active'); fab.style.display = 'none'; }
-        else if(view === 'jb') { document.getElementById('sectionJB').classList.add('active'); renderJB(); fab.style.display = 'flex'; }
-        else if(view === 'grup') { document.getElementById('sectionGrup').classList.add('active'); renderGrup(); fab.style.display = 'flex'; }
+        if(view === 'topup') { 
+            document.getElementById('sectionTopup').classList.add('active'); 
+            fab.style.display = 'none'; 
+        }
+        else if(view === 'jb') { 
+            document.getElementById('sectionJB').classList.add('active'); 
+            renderJB(); 
+            fab.style.display = 'flex'; 
+        }
+        else if(view === 'grup') { 
+            document.getElementById('sectionGrup').classList.add('active'); 
+            renderGrup(); 
+            fab.style.display = 'flex'; 
+        }
     }
 
     function openOrder(game, icon) {
@@ -731,13 +744,12 @@
                 const p = doc.data();
                 const now = new Date().toISOString().split('T')[0];
 
-                // FIX: Logika targetGame agar khusus FF/ML dll berfungsi
-                if(p.targetGame !== 'all' && p.targetGame !== curG) {
-                   return ardhanAlert("Gagal", `Kode promo ini hanya berlaku khusus untuk game ${p.targetGame}`);
+                if(p.targetGame && p.targetGame !== 'all' && p.targetGame !== curG) {
+                    return ardhanAlert("Gagal", `Kode promo ini hanya berlaku khusus untuk game ${p.targetGame}`);
                 }
 
-                if(p.expired < now) return ardhanAlert("Gagal", "Kode promo sudah kadaluarsa!");
-                if(p.usedCount >= p.limit) return ardhanAlert("Gagal", "Limit kuota promo sudah habis!");
+                if(p.expired && p.expired < now) return ardhanAlert("Gagal", "Kode promo sudah kadaluarsa!");
+                if(p.limit && p.usedCount >= p.limit) return ardhanAlert("Gagal", "Limit kuota promo sudah habis!");
 
                 let discAmount = 0;
                 if(p.discType === 'rp') {
@@ -801,6 +813,8 @@
     }
 
     // --- JB & GRUP FIREBASE ---
+    function renderJB() { /* placeholder for real-time listener */ }
+
     async function saveJB() {
         const id = document.getElementById('editJbId').value;
         const file = document.getElementById('jbInputImg').files[0];
@@ -857,14 +871,17 @@
 
     db.collection("jb_accounts").orderBy("timestamp", "desc").onSnapshot(snap => {
         const area = document.getElementById('jbDisplayArea');
+        if(!area) return;
         area.innerHTML = "";
         snap.forEach(doc => {
             const item = doc.data();
             const id = doc.id;
-            let editBtn = (auth.currentUser) ? `<button class="btn-edit-item" onclick='editJB("${id}", ${JSON.stringify(item).replace(/'/g, "&apos;")})'>Edit</button>` : "";
+            let editBtn = (auth.currentUser && auth.currentUser.displayName === item.seller) ? `<button class="btn-edit-item" onclick='editJB("${id}", ${JSON.stringify(item).replace(/'/g, "&apos;")})'>Edit</button>` : "";
             area.innerHTML += `<div class="jb-card">${editBtn}<img src="${item.img}"><div class="jb-info"><div class="jb-game">${item.game}</div><div class="jb-desc">${item.desc}</div><div class="jb-price">Rp ${item.price.toLocaleString()}</div><a href="https://wa.me/${item.wa}" class="jb-btn-wa">CHAT PENJUAL</a></div></div>`;
         });
     });
+
+    function renderGrup() { /* placeholder for real-time listener */ }
 
     async function saveGrup() {
         const id = document.getElementById('editGrupId').value;
@@ -917,12 +934,13 @@
 
     db.collection("groups").orderBy("timestamp", "desc").onSnapshot(snap => {
         const area = document.getElementById('grupDisplayArea');
+        if(!area) return;
         area.innerHTML = "";
         snap.forEach(doc => {
             const item = doc.data();
             const id = doc.id;
             let editBtn = (auth.currentUser) ? `<button class="btn-edit-grup" onclick='editGrup("${id}", ${JSON.stringify(item).replace(/'/g, "&apos;")})'>Edit</button>` : "";
-            area.innerHTML += `<div class="grup-item"><img src="${item.img}" class="grup-img"><div style="flex:1"><b>${item.name}</b></div><div style="display:flex; gap:5px"><a href="${item.link}" target="_blank" class="btn-join">GABUNG</a>${editBtn}</div></div>`;
+            area.innerHTML += `<div class="grup-item"><img src="${item.img}" class="grup-img"><div style="flex:1"><b>${item.name}</b><br><small style="color:#94a3b8">${item.desc || ''}</small></div><div style="display:flex; gap:5px"><a href="${item.link}" target="_blank" class="btn-join">GABUNG</a>${editBtn}</div></div>`;
         });
     });
 
@@ -943,14 +961,40 @@
         });
     }
 
+    function filterGrup() {
+        const search = document.getElementById('searchGrupName').value.toLowerCase();
+        db.collection("groups").get().then(snap => {
+            const area = document.getElementById('grupDisplayArea');
+            area.innerHTML = "";
+            snap.forEach(doc => {
+                const item = doc.data();
+                if(item.name.toLowerCase().includes(search)) {
+                    area.innerHTML += `<div class="grup-item"><img src="${item.img}" class="grup-img"><div style="flex:1"><b>${item.name}</b><br><small style="color:#94a3b8">${item.desc || ''}</small></div><div style="display:flex; gap:5px"><a href="${item.link}" target="_blank" class="btn-join">GABUNG</a></div></div>`;
+                }
+            });
+        });
+    }
+
     function openAddModal() { 
         document.getElementById('jbImgPreview').innerHTML = "";
         document.getElementById('grupImgPreview').innerHTML = "";
-        if(currentView === 'jb') document.getElementById('modalAddJB').style.display = 'block'; 
-        else if(currentView === 'grup') document.getElementById('modalAddGrup').style.display = 'block'; 
+        if(currentView === 'jb') {
+            document.getElementById('modalAddJB').style.display = 'block'; 
+            document.getElementById('modalAddGrup').style.display = 'none';
+        } else if(currentView === 'grup') {
+            document.getElementById('modalAddGrup').style.display = 'block'; 
+            document.getElementById('modalAddJB').style.display = 'none';
+        } 
     }
-    function closeModals() { document.querySelectorAll('.form-modal').forEach(m => m.style.display = 'none'); }
-    function closeModal() { document.getElementById('qrisModal').style.display = 'none'; }
+    
+    function closeModals() { 
+        document.querySelectorAll('.form-modal').forEach(m => m.style.display = 'none'); 
+    }
+    
+    function closeModal() { 
+        document.getElementById('qrisModal').style.display = 'none'; 
+    }
+    
     function backToMenu() {
         document.getElementById('sectionTopup').style.display = 'block';
         document.getElementById('bannerSlider').style.display = 'block';
@@ -958,7 +1002,12 @@
         document.getElementById('mainOrderForm').style.display = 'none';
         initSlider();
     }
-    window.onclick = e => { if (!e.target.closest('.custom-select-wrapper')) document.querySelectorAll('.custom-options').forEach(o => o.classList.remove('show')); }
+    
+    window.onclick = e => { 
+        if (!e.target.closest('.custom-select-wrapper')) {
+            document.querySelectorAll('.custom-options').forEach(o => o.classList.remove('show')); 
+        }
+    }
 </script>
 </body>
 </html>
