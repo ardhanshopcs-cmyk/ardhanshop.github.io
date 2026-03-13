@@ -187,6 +187,8 @@
         .jb-game { font-size: 0.7rem; color: #94a3b8; text-transform: uppercase; font-weight: bold; }
         .jb-desc { font-size: 0.75rem; color: #cbd5e1; margin: 5px 0; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
         .jb-btn-wa { display: block; width: 100%; padding: 8px; background: #25d366; color: white; text-align: center; text-decoration: none; border-radius: 5px; margin-top: 5px; font-size: 0.8rem; font-weight: bold; }
+        
+        /* TOMBOL EDIT & HAPUS POSISI FLOATING DI KARTU */
         .btn-delete-post { position: absolute; top: 5px; right: 5px; background: var(--error); color: white; border: none; width: 25px; height: 25px; border-radius: 50%; cursor: pointer; font-weight: bold; font-size: 12px; z-index: 10; display: flex; align-items: center; justify-content: center; }
         .btn-edit-item { position: absolute; top: 5px; left: 5px; background: var(--primary); color: #000; border: none; padding: 2px 8px; border-radius: 5px; cursor: pointer; font-weight: bold; font-size: 10px; z-index: 10; }
 
@@ -254,7 +256,8 @@
         .qris-img { width: 100%; max-width: 250px; border-radius: 15px; margin: 15px 0; }
         .btn-wa { width: 100%; padding: 16px; background: #25d366; color: white; border: none; border-radius: 12px; font-weight: 700; cursor: pointer; }
 
-        .fab-add { position: fixed; bottom: 100px; right: 20px; width: 55px; height: 55px; background: var(--primary); border-radius: 50%; display: none; align-items: center; justify-content: center; z-index: 99; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.4); }
+        /* FAB ADD POSITION (NAIK KE ATAS CS) */
+        .fab-add { position: fixed; bottom: 160px; right: 20px; width: 55px; height: 55px; background: var(--primary); border-radius: 50%; display: none; align-items: center; justify-content: center; z-index: 99; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.4); }
         .cs-floating { position: fixed; width: 60px; height: 60px; bottom: 85px; right: 20px; background-color: #25d366; border-radius: 50%; display: flex; align-items: center; justify-content: center; z-index: 1000; box-shadow: 0 4px 10px rgba(0,0,0,0.3); border: 2px solid white; }
         .cs-floating img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
 
@@ -618,6 +621,7 @@
             ardhanAlert("Akses Ditolak", "Silakan Login Google terlebih dahulu untuk Jual Akun atau Buat Grup!");
             return;
         }
+        // Reset form to add mode
         document.getElementById('editJbId').value = "";
         document.getElementById('jbModalTitle').innerText = "Jual Akun Game";
         document.getElementById('btnSaveJB').innerText = "POSTING SEKARANG";
@@ -1115,16 +1119,20 @@
             };
             if(imgData) data.img = imgData;
 
-            if(id) {
-                await db.collection("jb_accounts").doc(id).update(data);
-                ardhanToast("Berhasil Terupdate!");
-            } else {
-                if(!imgData) return alert("Sertakan screenshot!");
-                await db.collection("jb_accounts").add(data);
-                ardhanToast("Terposting!");
+            try {
+                if(id) {
+                    await db.collection("jb_accounts").doc(id).update(data);
+                    ardhanToast("Berhasil Terupdate!");
+                } else {
+                    if(!imgData) return alert("Sertakan screenshot!");
+                    await db.collection("jb_accounts").add(data);
+                    ardhanToast("Terposting!");
+                }
+                closeModals();
+                filterJB();
+            } catch (e) {
+                alert("Gagal menyimpan!");
             }
-            closeModals();
-            filterJB();
         };
 
         if(file) {
@@ -1180,16 +1188,20 @@
             };
             if(imgData) data.img = imgData;
 
-            if(id) {
-                await db.collection("groups").doc(id).update(data);
-                ardhanToast("Grup Terupdate!");
-            } else {
-                if(!imgData) return alert("Sertakan Gambar!");
-                await db.collection("groups").add(data);
-                ardhanToast("Grup Ditambahkan!");
+            try {
+                if(id) {
+                    await db.collection("groups").doc(id).update(data);
+                    ardhanToast("Grup Terupdate!");
+                } else {
+                    if(!imgData) return alert("Sertakan Gambar!");
+                    await db.collection("groups").add(data);
+                    ardhanToast("Grup Ditambahkan!");
+                }
+                closeModals();
+                filterGrup();
+            } catch (e) {
+                alert("Gagal menyimpan!");
             }
-            closeModals();
-            filterGrup();
         };
 
         if(f) {
@@ -1247,6 +1259,8 @@
                 if (p && item.price > p) return;
 
                 hasContent = true;
+                
+                // LOGIKA TOMBOL EDIT/HAPUS (KHUSUS PEMILIK)
                 const isOwner = auth.currentUser && (auth.currentUser.email === item.seller_email);
                 let editBtn = isOwner ? `<button class="btn-edit-item" onclick='editJB("${id}", ${JSON.stringify(item).replace(/'/g, "&apos;")})'>Edit</button>` : "";
                 let delBtn = isOwner ? `<button class="btn-delete-post" onclick="deleteJB('${id}')">X</button>` : "";
@@ -1278,6 +1292,8 @@
                 if(search && !item.name.toLowerCase().includes(search)) return;
 
                 hasContent = true;
+
+                // LOGIKA TOMBOL EDIT/HAPUS (KHUSUS PEMILIK)
                 const isOwner = auth.currentUser && (auth.currentUser.email === item.owner_email);
                 let editBtn = isOwner ? `<button class="btn-edit-grup" onclick='editGrup("${id}", ${JSON.stringify(item).replace(/'/g, "&apos;")})'>Edit</button>` : "";
                 let delBtn = isOwner ? `<button class="btn-delete-grup-post" onclick="deleteGrup('${id}')">Hapus</button>` : "";
