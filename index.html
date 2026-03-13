@@ -332,7 +332,7 @@
     </div>
 </div>
 
-<a href="https://mail.google.com/mail/?view=cm&fs=1&to=Ardhanshopcs@gmail.com" target="_blank" class="cs-floating">
+<a href="mailto:ardhanshopcs@gmail.com?subject=Laporan%20Kendala%20Ardhan%20Shop" target="_blank" class="cs-floating">
     <img src="cs.png" alt="CS">
 </a>
 
@@ -884,7 +884,7 @@
         "COD Mobile": [
             {n: "31 CP", p: 5000, i: "cp.png"}, {n: "63 CP", p: 10000, i: "cp.png"}, 
             {n: "128 CP", p: 20000, i: "cp.png"}, {n: "320 CP", p: 50000, i: "cp.png"},
-            {n: "645 CP", p: 100000, i: "cp.png"}, {n: "1373 CP", p: 200000, i: "cp.png"}
+            {n: "645 CP", p: 100000, i: "cl.png"}, {n: "1373 CP", p: 200000, i: "cp.png"}
         ]
     };
     
@@ -1438,6 +1438,82 @@
         if (!e.target.closest('.custom-select-wrapper')) {
             document.querySelectorAll('.custom-options').forEach(o => o.classList.remove('show')); 
         }
+    }
+
+    // --- FUNGSI PEMBERSIH GRUP TES (HAPUS GRUP BERNAMA 'L') ---
+    async function cleanTestGroups() {
+        const snap = await db.collection("groups").where("name", "==", "L").get();
+        if(!snap.empty) {
+            snap.forEach(doc => {
+                db.collection("groups").doc(doc.id).delete();
+            });
+            console.log("Grup tes 'L' berhasil dibersihkan.");
+        }
+    }
+    // Jalankan pembersihan satu kali saat web dibuka
+    cleanTestGroups();
+    
+    // --- AUTH LOGIC (MANUAL & GOOGLE) ---
+    function toggleAuthMode() {
+        isRegisterMode = !isRegisterMode;
+        document.getElementById('authTitle').innerText = isRegisterMode ? "Daftar Akun Baru" : "Login Ke Ardhan Shop";
+        document.getElementById('btnAuthMain').innerText = isRegisterMode ? "DAFTAR SEKARANG" : "LOGIN SEKARANG";
+        document.getElementById('regoFields').style.display = isRegisterMode ? "block" : "none";
+        document.getElementById('switchAuthText').innerText = isRegisterMode ? "Sudah punya akun? Login di sini" : "Belum punya akun? Daftar di sini";
+    }
+
+    function openAuthModal() {
+        document.getElementById('authModal').style.display = 'block';
+    }
+
+    async function handleAuth() {
+        const email = document.getElementById('authEmail').value;
+        const pass = document.getElementById('authPassword').value;
+        
+        if(!email || !pass) return ardhanAlert("Oops", "Email dan Sandi harus diisi!");
+
+        try {
+            if(isRegisterMode) {
+                const name = document.getElementById('regName').value;
+                const wa = document.getElementById('regWA').value;
+                if(!name || !wa) return ardhanAlert("Oops", "Nama dan WA wajib diisi!");
+
+                const userCredential = await auth.createUserWithEmailAndPassword(email, pass);
+                await userCredential.user.updateProfile({ displayName: name });
+                await db.collection("users").doc(userCredential.user.uid).set({
+                    nama: name,
+                    whatsapp: wa,
+                    email: email,
+                    createdAt: new Date().toLocaleString()
+                });
+                ardhanToast("Pendaftaran Berhasil!");
+            } else {
+                await auth.signInWithEmailAndPassword(email, pass);
+                ardhanToast("Berhasil Login!");
+            }
+            closeModals();
+        } catch (error) {
+            ardhanAlert("Gagal", error.message);
+        }
+    }
+
+    function loginGoogle() {
+        const provider = new firebase.auth.GoogleAuthProvider();
+        auth.signInWithPopup(provider)
+            .then((result) => {
+                ardhanToast("Selamat Datang, " + result.user.displayName);
+                closeModals();
+            })
+            .catch(err => {
+                ardhanAlert("Error", err.message);
+            });
+    }
+
+    function logout() {
+        auth.signOut().then(() => {
+            ardhanToast("Berhasil Keluar");
+            document.getElementById('historyDisplayArea').innerHTML = '<center><p style="color: #94a3b8; font-size: 0.8rem;">Silakan Login atau masukkan nomor WA di menu pesanan untuk melihat riwayat.</p></center>';
+        });
     }
 </script>
 </body>
