@@ -530,6 +530,9 @@
     const adminEmail = "GANTI_DENGAN_EMAIL_ADMIN_KAMU@gmail.com";
     let activeJbSubTab = "public"; // public atau admin
     let activeGrupSubTab = "public"; // public atau admin
+    
+    // --- LOGIKA CLEANING: HANYA TAMPILKAN POSTINGAN SETELAH DETIK INI ---
+    const cleanupTime = new Date(); 
 
     // SINKRONISASI BANNER & QRIS DARI ADMIN
     db.collection("settings").onSnapshot(snap => {
@@ -1253,9 +1256,16 @@
                 const isAdminPost = (item.seller_email === adminEmail);
                 if (activeJbSubTab === 'admin' && !isAdminPost) return;
                 
-                // --- PERINTAH: BERSIHKAN PUBLIK ---
-                // Jika tab aktif adalah PUBLIC, kita abaikan semua data (paksa kosong)
-                if (activeJbSubTab === 'public') return;
+                // LOGIKA BERSIHKAN: 
+                // Di tab PUBLIK, hanya tampilkan yang timestamp-nya LEBIH BARU dari saat halaman dibuka (cleanupTime)
+                // ATAU yang di-upload oleh user itu sendiri (agar dia bisa lihat hasil upload-nya).
+                if (activeJbSubTab === 'public') {
+                    const postTime = item.timestamp ? item.timestamp.toDate() : new Date();
+                    const isNewPost = postTime >= cleanupTime;
+                    const isMyPost = auth.currentUser && item.seller_email === auth.currentUser.email;
+                    
+                    if (!isNewPost && !isMyPost) return;
+                }
 
                 // FILTER HARGA & GAME
                 if (g !== 'all' && item.game !== g) return;
@@ -1290,9 +1300,14 @@
                 const isAdminPost = (item.owner_email === adminEmail);
                 if (activeGrupSubTab === 'admin' && !isAdminPost) return;
                 
-                // --- PERINTAH: BERSIHKAN PUBLIK ---
-                // Jika tab aktif adalah PUBLIC, kita abaikan semua data (paksa kosong)
-                if (activeGrupSubTab === 'public') return;
+                // LOGIKA BERSIHKAN:
+                if (activeGrupSubTab === 'public') {
+                    const postTime = item.timestamp ? item.timestamp.toDate() : new Date();
+                    const isNewPost = postTime >= cleanupTime;
+                    const isMyPost = auth.currentUser && item.owner_email === auth.currentUser.email;
+                    
+                    if (!isNewPost && !isMyPost) return;
+                }
 
                 // FILTER SEARCH
                 if(search && !item.name.toLowerCase().includes(search)) return;
