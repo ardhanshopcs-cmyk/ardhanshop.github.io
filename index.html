@@ -21,13 +21,30 @@
             --glass: rgba(30, 41, 59, 0.7);
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; outline: none; -webkit-tap-highlight-color: transparent; }
+        /* HILANGKAN TELUSURI GAMBAR & SELEKSI */
+        img { 
+            -webkit-user-drag: none; 
+            -khtml-user-drag: none; 
+            -moz-user-drag: none; 
+            -o-user-drag: none; 
+            user-drag: none;
+            pointer-events: auto;
+            -webkit-touch-callout: none; /* Hilangkan context menu di iOS/Android */
+        }
+
+        * { 
+            box-sizing: border-box; 
+            margin: 0; padding: 0; 
+            outline: none; 
+            -webkit-tap-highlight-color: transparent;
+            user-select: none; /* Mencegah seleksi teks/gambar */
+        }
 
         body {
             font-family: 'Poppins', sans-serif;
             background-color: var(--bg-dark);
             color: var(--text-main);
-            padding-bottom: 50px;
+            padding-bottom: 80px; /* Tambah padding agar tidak tertutup menu bawah */
             overflow-x: hidden;
         }
 
@@ -44,11 +61,36 @@
         .logo-text { font-size: 1.4rem; font-weight: bold; color: var(--primary); letter-spacing: 1px; }
         
         /* LOGIN STYLE */
-        .user-profile { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+        .user-profile { display: flex; align-items: center; gap: 10px; }
         .user-img { width: 35px; height: 35px; border-radius: 50%; border: 2px solid var(--primary); }
         .btn-login { background: var(--primary); color: #000; border: none; padding: 8px 15px; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 0.8rem; }
+        .btn-logout { background: var(--error); color: white; border: none; padding: 5px 10px; border-radius: 5px; font-size: 0.65rem; font-weight: bold; cursor: pointer; margin-left: 5px; }
 
         .container { max-width: 800px; margin: 20px auto; padding: 0 15px; }
+
+        /* BOTTOM NAVIGATION */
+        .bottom-nav {
+            position: fixed; bottom: 0; left: 0; width: 100%; height: 65px;
+            background: var(--card-bg); border-top: 2px solid var(--primary);
+            display: flex; justify-content: space-around; align-items: center; z-index: 1000;
+        }
+        .nav-item { 
+            display: flex; flex-direction: column; align-items: center; 
+            color: #94a3b8; cursor: pointer; transition: 0.3s; font-size: 0.75rem; font-weight: 600;
+        }
+        .nav-item.active { color: var(--primary); }
+        
+        /* MODIFIKASI WARNA PUTIH GAMBAR TOMBOL NAVIGASI */
+        .nav-item img { 
+            width: 24px; 
+            margin-bottom: 3px; 
+            filter: brightness(0) invert(1); /* Membuat gambar menjadi putih bersih */
+            opacity: 0.7;
+        }
+        .nav-item.active img { 
+            filter: brightness(0) invert(1); /* Tetap putih saat aktif */
+            opacity: 1; 
+        }
 
         /* MODERN ALERT & TOAST */
         .ardhan-alert-overlay {
@@ -64,7 +106,7 @@
         }
         .btn-alert-ok { background: var(--primary); border: none; padding: 10px 30px; border-radius: 10px; font-weight: bold; cursor: pointer; color: #000; }
 
-        .toast-container { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 10000; }
+        .toast-container { position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%); z-index: 10000; }
         .toast { background: var(--card-bg); color: white; padding: 12px 25px; border-radius: 50px; border: 1px solid var(--primary); margin-top: 10px; animation: slideUp 0.4s ease; display: flex; align-items: center; gap: 10px; }
 
         /* INFINITE BANNER SLIDER */
@@ -95,12 +137,32 @@
         }
         .nav-tab-btn.active { border-color: var(--primary); background: rgba(245, 158, 11, 0.1); color: var(--primary); }
 
+        /* SUB TABS (Public vs Admin) */
+        .sub-tab-container { display: flex; gap: 10px; margin-bottom: 15px; justify-content: center; }
+        .sub-tab-btn { padding: 6px 20px; border-radius: 20px; border: 1px solid #334155; background: #0f172a; color: #94a3b8; font-size: 0.75rem; cursor: pointer; font-weight: bold; }
+        .sub-tab-btn.active { background: var(--primary); color: #000; border-color: var(--primary); }
+
+        /* WARNING BOX STYLE */
+        .warning-box {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid var(--error);
+            padding: 12px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            animation: fadeIn 0.4s ease;
+        }
+        .warning-box span { color: var(--error); font-size: 0.7rem; font-weight: 600; line-height: 1.4; }
+        .warning-box b { color: var(--error); font-size: 0.8rem; }
+
         .view-section { display: none; animation: fadeIn 0.4s ease; }
         .view-section.active { display: block; }
 
         /* JB & GRUP STYLES */
         .search-bar { display: flex; gap: 10px; margin-bottom: 20px; align-items: center; }
-        .search-bar input { flex: 1.5; padding: 12px; border-radius: 8px; background: #0f172a; border: 1px solid #334155; color: white; font-family: inherit; }
+        .search-bar input { flex: 1.5; padding: 12px; border-radius: 8px; background: #0f172a; border: 1px solid #334155; color: white; font-family: inherit; user-select: text; }
         
         .custom-select-wrapper { position: relative; flex: 1; min-width: 140px; }
         .custom-select-trigger {
@@ -125,14 +187,19 @@
         .jb-game { font-size: 0.7rem; color: #94a3b8; text-transform: uppercase; font-weight: bold; }
         .jb-desc { font-size: 0.75rem; color: #cbd5e1; margin: 5px 0; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
         .jb-btn-wa { display: block; width: 100%; padding: 8px; background: #25d366; color: white; text-align: center; text-decoration: none; border-radius: 5px; margin-top: 5px; font-size: 0.8rem; font-weight: bold; }
-        .btn-delete { position: absolute; top: 5px; right: 5px; background: rgba(239, 68, 68, 0.8); color: white; border: none; width: 25px; height: 25px; border-radius: 50%; cursor: pointer; font-weight: bold; font-size: 12px; z-index: 10; }
+        .btn-delete-post { position: absolute; top: 5px; right: 5px; background: var(--error); color: white; border: none; width: 25px; height: 25px; border-radius: 50%; cursor: pointer; font-weight: bold; font-size: 12px; z-index: 10; display: flex; align-items: center; justify-content: center; }
         .btn-edit-item { position: absolute; top: 5px; left: 5px; background: var(--primary); color: #000; border: none; padding: 2px 8px; border-radius: 5px; cursor: pointer; font-weight: bold; font-size: 10px; z-index: 10; }
 
         .grup-item { background: var(--card-bg); padding: 15px; border-radius: 15px; margin-bottom: 12px; display: flex; align-items: center; gap: 15px; border: 1px solid #334155; position: relative; }
         .grup-img { width: 60px; height: 60px; border-radius: 12px; object-fit: cover; }
         .btn-join { background: var(--primary); color: black; padding: 8px 15px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 0.8rem; }
-        .btn-delete-grup { background: var(--error); color: white; border: none; padding: 8px 10px; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 0.8rem; }
+        .btn-delete-grup-post { background: var(--error); color: white; border: none; padding: 8px 12px; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 0.8rem; }
         .btn-edit-grup { background: #3b82f6; color: white; border: none; padding: 8px 10px; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 0.8rem; }
+
+        /* HISTORY CARDS */
+        .history-card { background: var(--card-bg); padding: 15px; border-radius: 15px; margin-bottom: 10px; border: 1px solid #334155; position: relative; }
+        .history-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; border-bottom: 1px solid #334155; padding-bottom: 5px; }
+        .status-success { color: var(--success); font-weight: bold; font-size: 0.75rem; }
 
         /* GAME GRID */
         .game-grid-main { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 15px; }
@@ -147,7 +214,7 @@
         .section-title { font-weight: 700; color: var(--primary); margin-bottom: 20px; display: flex; align-items: center; }
         .step { background: var(--primary); color: #000; width: 28px; height: 28px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-right: 12px; font-weight: 800; }
         
-        input, textarea { width: 100%; padding: 14px; border-radius: 10px; border: 2px solid #334155; background: #0f172a; color: white; font-size: 1rem; font-family: inherit; }
+        input, textarea { width: 100%; padding: 14px; border-radius: 10px; border: 2px solid #334155; background: #0f172a; color: white; font-size: 1rem; font-family: inherit; user-select: text; }
         .input-ml { display: grid; grid-template-columns: 2fr 1fr; gap: 10px; }
 
         /* PROMO AREA */
@@ -187,11 +254,11 @@
         .qris-img { width: 100%; max-width: 250px; border-radius: 15px; margin: 15px 0; }
         .btn-wa { width: 100%; padding: 16px; background: #25d366; color: white; border: none; border-radius: 12px; font-weight: 700; cursor: pointer; }
 
-        .fab-add { position: fixed; bottom: 90px; right: 20px; width: 55px; height: 55px; background: var(--primary); border-radius: 50%; display: none; align-items: center; justify-content: center; z-index: 99; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.4); }
-        .cs-floating { position: fixed; width: 60px; height: 60px; bottom: 20px; right: 20px; background-color: #25d366; border-radius: 50%; display: flex; align-items: center; justify-content: center; z-index: 1000; box-shadow: 0 4px 10px rgba(0,0,0,0.3); border: 2px solid white; }
+        .fab-add { position: fixed; bottom: 100px; right: 20px; width: 55px; height: 55px; background: var(--primary); border-radius: 50%; display: none; align-items: center; justify-content: center; z-index: 99; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.4); }
+        .cs-floating { position: fixed; width: 60px; height: 60px; bottom: 85px; right: 20px; background-color: #25d366; border-radius: 50%; display: flex; align-items: center; justify-content: center; z-index: 1000; box-shadow: 0 4px 10px rgba(0,0,0,0.3); border: 2px solid white; }
         .cs-floating img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
 
-        footer { text-align: center; padding: 40px 0; font-size: 0.8rem; color: #64748b; border-top: 1px solid #334155; }
+        footer { text-align: center; padding: 40px 0; font-size: 0.8rem; color: #64748b; border-top: 1px solid #334155; margin-bottom: 20px; }
         
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         @keyframes popScale { from { transform: scale(0.7); opacity: 0; } to { transform: scale(1); opacity: 1; } }
@@ -224,6 +291,17 @@
     </div>
 </nav>
 
+<div class="bottom-nav">
+    <div class="nav-item active" id="navHome" onclick="switchTabNav('home')">
+        <img src="home.png" alt="Home">
+        <span>Beranda</span>
+    </div>
+    <div class="nav-item" id="navHistory" onclick="switchTabNav('history')">
+        <img src="history.png" alt="History">
+        <span>History</span>
+    </div>
+</div>
+
 <a href="https://mail.google.com/mail/?view=cm&fs=1&to=Ardhanshopcs@gmail.com" target="_blank" class="cs-floating">
     <img src="cs.png" alt="CS">
 </a>
@@ -232,63 +310,93 @@
     <img src="edit.png" style="width:25px" alt="Add">
 </div>
 
-<div class="container">
-    <div class="banner-container" id="bannerSlider">
-        <div class="banner-wrapper" id="bannerWrapper">
-            </div>
-        <div class="banner-dots" id="dotContainer"></div>
-    </div>
-
-    <div class="main-nav-tabs">
-        <div class="nav-tab-btn active" onclick="switchMainView('topup', this)">Menu Game</div>
-        <div class="nav-tab-btn" onclick="switchMainView('jb', this)">JB Akun Game</div>
-        <div class="nav-tab-btn" onclick="switchMainView('grup', this)">Grup</div>
-    </div>
-
-    <div id="sectionTopup" class="view-section active">
-        <div class="game-grid-main">
-            <div class="game-card-main" onclick="openOrder('Mobile Legends', 'ml.png')"><img src="ml.png"><h3>Mobile Legends</h3></div>
-            <div class="game-card-main" onclick="openOrder('Free Fire', 'ff.png')"><img src="ff.png"><h3>Free Fire</h3></div>
-            <div class="game-card-main" onclick="openOrder('PUBG Mobile', 'pubg.png')"><img src="pubg.png"><h3>PUBG Mobile</h3></div>
-            <div class="game-card-main" onclick="openOrder('Genshin Impact', 'gi.png')"><img src="gi.png"><h3>Genshin Impact</h3></div>
-            <div class="game-card-main" onclick="openOrder('Roblox', 'roblox.png')"><img src="roblox.png"><h3>Roblox</h3></div>
-            <div class="game-card-main" onclick="openOrder('Honor of Kings', 'hok.png')"><img src="hok.png"><h3>Honor of Kings</h3></div>
-            <div class="game-card-main" onclick="openOrder('COD Mobile', 'cod.png')"><img src="cod.png"><h3>COD Mobile</h3></div>
-            <div class="game-card-main" onclick="openOrder('Minecraft Hosting', 'mc.png')"><img src="mc.png"><h3>MC Hosting</h3></div>
+<div class="container" id="mainContainer">
+    <div id="sectionHome" class="view-section active">
+        <div class="banner-container" id="bannerSlider">
+            <div class="banner-wrapper" id="bannerWrapper"></div>
+            <div class="banner-dots" id="dotContainer"></div>
         </div>
-    </div>
 
-    <div id="sectionJB" class="view-section">
-        <div class="search-bar">
-            <input type="number" id="searchJbPrice" placeholder="Harga Maksimal" oninput="filterJB()">
-            <div class="custom-select-wrapper">
-                <div class="custom-select-trigger" onclick="toggleDropdown('filterOptions')">
-                    <span id="filterGameText">Semua Game</span>
-                    <span>▼</span>
-                </div>
-                <div class="custom-options" id="filterOptions">
-                    <div class="custom-option" onclick="setFilter('all', 'Semua Game')">Semua Game</div>
-                    <div class="custom-option" onclick="setFilter('Mobile Legends', 'Mobile Legends')">Mobile Legends</div>
-                    <div class="custom-option" onclick="setFilter('Free Fire', 'Free Fire')">Free Fire</div>
-                    <div class="custom-option" onclick="setFilter('Roblox', 'Roblox')">Roblox</div>
-                    <div class="custom-option" onclick="setFilter('Honor of Kings', 'HOK')">HOK</div>
-                    <div class="custom-option" onclick="setFilter('PUBG Mobile', 'PUBG')">PUBG</div>
+        <div id="homeMainContent">
+            <div class="main-nav-tabs">
+                <div class="nav-tab-btn active" id="btnTopupTab" onclick="switchMainView('topup', this)">Menu Game</div>
+                <div class="nav-tab-btn" onclick="switchMainView('jb', this)">JB Akun Game</div>
+                <div class="nav-tab-btn" onclick="switchMainView('grup', this)">Grup</div>
+            </div>
+
+            <div id="sectionTopup" class="view-section active">
+                <div class="game-grid-main">
+                    <div class="game-card-main" onclick="openOrder('Mobile Legends', 'ml.png')"><img src="ml.png"><h3>Mobile Legends</h3></div>
+                    <div class="game-card-main" onclick="openOrder('Free Fire', 'ff.png')"><img src="ff.png"><h3>Free Fire</h3></div>
+                    <div class="game-card-main" onclick="openOrder('PUBG Mobile', 'pubg.png')"><img src="pubg.png"><h3>PUBG Mobile</h3></div>
+                    <div class="game-card-main" onclick="openOrder('Genshin Impact', 'gi.png')"><img src="gi.png"><h3>Genshin Impact</h3></div>
+                    <div class="game-card-main" onclick="openOrder('Roblox', 'roblox.png')"><img src="roblox.png"><h3>Roblox</h3></div>
+                    <div class="game-card-main" onclick="openOrder('Honor of Kings', 'hok.png')"><img src="hok.png"><h3>Honor of Kings</h3></div>
+                    <div class="game-card-main" onclick="openOrder('COD Mobile', 'cod.png')"><img src="cod.png"><h3>COD Mobile</h3></div>
+                    <div class="game-card-main" onclick="openOrder('Minecraft Hosting', 'mc.png')"><img src="mc.png"><h3>MC Hosting</h3></div>
                 </div>
             </div>
-            <input type="hidden" id="searchJbGame" value="all">
+
+            <div id="sectionJB" class="view-section">
+                <div class="sub-tab-container">
+                    <button class="sub-tab-btn active" id="btnJbPublic" onclick="switchSubTab('jb', 'public')">Publik</button>
+                    <button class="sub-tab-btn" id="btnJbAdmin" onclick="switchSubTab('jb', 'admin')">Admin</button>
+                </div>
+
+                <div id="jbPublicWarning" class="warning-box">
+                    <b>⚠️</b>
+                    <span><b>HATI-HATI:</b> Transaksi di tab Publik bukan tanggung jawab Admin. Gunakan Rekber terpercaya agar tidak tertipu!</span>
+                </div>
+                
+                <div class="search-bar">
+                    <input type="number" id="searchJbPrice" placeholder="Harga Maksimal" oninput="filterJB()">
+                    <div class="custom-select-wrapper">
+                        <div class="custom-select-trigger" onclick="toggleDropdown('filterOptions')">
+                            <span id="filterGameText">Semua Game</span>
+                            <span>▼</span>
+                        </div>
+                        <div class="custom-options" id="filterOptions">
+                            <div class="custom-option" onclick="setFilter('all', 'Semua Game')">Semua Game</div>
+                            <div class="custom-option" onclick="setFilter('Mobile Legends', 'Mobile Legends')">Mobile Legends</div>
+                            <div class="custom-option" onclick="setFilter('Free Fire', 'Free Fire')">Free Fire</div>
+                            <div class="custom-option" onclick="setFilter('Roblox', 'Roblox')">Roblox</div>
+                            <div class="custom-option" onclick="setFilter('Honor of Kings', 'HOK')">HOK</div>
+                            <div class="custom-option" onclick="setFilter('PUBG Mobile', 'PUBG')">PUBG</div>
+                        </div>
+                    </div>
+                    <input type="hidden" id="searchJbGame" value="all">
+                </div>
+                <div class="jb-grid" id="jbDisplayArea"></div>
+            </div>
+
+            <div id="sectionGrup" class="view-section">
+                <div class="sub-tab-container">
+                    <button class="sub-tab-btn active" id="btnGrupPublic" onclick="switchSubTab('grup', 'public')">Publik</button>
+                    <button class="sub-tab-btn" id="btnGrupAdmin" onclick="switchSubTab('grup', 'admin')">Admin</button>
+                </div>
+
+                <div id="grupPublicWarning" class="warning-box">
+                    <b>⚠️</b>
+                    <span><b>PERINGATAN:</b> Berhati-hatilah saat bergabung ke grup orang lain. Admin tidak menjamin keamanan konten di dalamnya.</span>
+                </div>
+
+                <div class="search-bar">
+                    <input type="text" id="searchGrupName" placeholder="Cari Nama Grup..." oninput="filterGrup()">
+                </div>
+                <div id="grupDisplayArea"></div>
+            </div>
         </div>
-        <div class="jb-grid" id="jbDisplayArea"></div>
     </div>
 
-    <div id="sectionGrup" class="view-section">
-        <div class="search-bar">
-            <input type="text" id="searchGrupName" placeholder="Cari Nama Grup..." oninput="filterGrup()">
+    <div id="sectionHistory" class="view-section">
+        <h2 style="color: var(--primary); margin-bottom: 20px;">Riwayat Pesanan Sukses</h2>
+        <div id="historyDisplayArea">
+            <center><p style="color: #94a3b8; font-size: 0.8rem;">Silakan Login atau masukkan nomor WA di menu pesanan untuk melihat riwayat.</p></center>
         </div>
-        <div id="grupDisplayArea"></div>
     </div>
 
     <div id="mainOrderForm">
-        <button class="btn-back" onclick="backToMenu()">← Kembali</button>
+        <button class="btn-back" onclick="backToMenu()">Kembali</button>
         <center>
             <img id="headerGameIcon" style="width: 80px; height: 80px; border-radius: 15px; border: 2px solid var(--primary); margin-bottom: 10px;">
             <h2 id="displayGameName" style="color: var(--primary); margin-bottom: 20px;"></h2>
@@ -327,7 +435,7 @@
 
         <div class="section">
             <div class="section-title"><div class="step">5</div> Kontak & Bayar</div>
-            <div style="margin-bottom:15px"><input type="number" id="userWA" placeholder="Nomor WhatsApp (08xxx)"></div>
+            <div style="margin-bottom:15px"><input type="number" id="userWA" placeholder="Nomor WhatsApp (08xxx)" oninput="loadHistoryByWA()"></div>
             <div style="margin-bottom:15px"><input type="email" id="userEmail" placeholder="Alamat E-mail"></div>
             <div style="margin-bottom:15px"><input type="text" id="senderName" placeholder="Nama Payment Mu (Contoh: Ardhan Dana)"></div>
             <button class="btn-order" onclick="processPayment()">KONFIRMASI PESANAN</button>
@@ -364,7 +472,7 @@
             <input type="hidden" id="jbInputGame">
         </div>
         <div style="margin-bottom:15px">
-            <textarea id="jbInputDesc" placeholder="Deskripsi Akun (Contoh: Spek gahar, Winrate 80%, Skin melimpah...)" rows="3"></textarea>
+            <textarea id="jbInputDesc" placeholder="Desipsi Akun (Contoh: Spek gahar, Winrate 80%, Skin melimpah...)" rows="3"></textarea>
         </div>
         <input type="number" id="jbInputPrice" placeholder="Harga Jual (Rp)"><br><br>
         <input type="number" id="jbInputWA" placeholder="Nomor WA Penjual (628xxx)"><br><br>
@@ -415,6 +523,11 @@
     const db = firebase.firestore();
     const auth = firebase.auth();
 
+    // VARIABEL ADMIN (GANTI DENGAN EMAIL ADMIN KAMU)
+    const adminEmail = "GANTI_DENGAN_EMAIL_ADMIN_KAMU@gmail.com";
+    let activeJbSubTab = "public"; // public atau admin
+    let activeGrupSubTab = "public"; // public atau admin
+
     // SINKRONISASI BANNER & QRIS DARI ADMIN
     db.collection("settings").onSnapshot(snap => {
         snap.forEach(doc => {
@@ -436,10 +549,43 @@
         }
     }
 
-    // --- AUTH LOGIC ---
+    // --- LOGIKA SUB TAB (PUBLIK VS ADMIN) ---
+    function switchSubTab(type, target) {
+        if(type === 'jb') {
+            activeJbSubTab = target;
+            document.getElementById('btnJbPublic').classList.toggle('active', target === 'public');
+            document.getElementById('btnJbAdmin').classList.toggle('active', target === 'admin');
+            // Logika Sembunyikan/Tampilkan Warning
+            document.getElementById('jbPublicWarning').style.display = (target === 'public') ? 'flex' : 'none';
+            filterJB();
+        } else {
+            activeGrupSubTab = target;
+            document.getElementById('btnGrupPublic').classList.toggle('active', target === 'public');
+            document.getElementById('btnGrupAdmin').classList.toggle('active', target === 'admin');
+            // Logika Sembunyikan/Tampilkan Warning
+            document.getElementById('grupPublicWarning').style.display = (target === 'public') ? 'flex' : 'none';
+            filterGrup();
+        }
+    }
+
+    // --- AUTH LOGIC (FIXED) ---
     function loginGoogle() {
         const provider = new firebase.auth.GoogleAuthProvider();
-        auth.signInWithPopup(provider).catch(err => ardhanAlert("Error", err.message));
+        auth.signInWithPopup(provider)
+            .then((result) => {
+                ardhanToast("Selamat Datang, " + result.user.displayName);
+                loadHistoryByEmail(result.user.email);
+            })
+            .catch(err => {
+                ardhanAlert("Error", err.message);
+            });
+    }
+
+    function logout() {
+        auth.signOut().then(() => {
+            ardhanToast("Berhasil Keluar");
+            document.getElementById('historyDisplayArea').innerHTML = '<center><p style="color: #94a3b8; font-size: 0.8rem;">Silakan Login atau masukkan nomor WA di menu pesanan untuk melihat riwayat.</p></center>';
+        });
     }
 
     auth.onAuthStateChanged(user => {
@@ -447,12 +593,23 @@
         if(user) {
             area.innerHTML = `
                 <div class="user-profile">
-                    <span style="font-size:0.7rem; font-weight:bold;">${user.displayName.split(' ')[0]}</span>
-                    <img src="${user.photoURL}" class="user-img" onclick="auth.signOut()">
+                    <img src="${user.photoURL}" class="user-img">
+                    <div style="display: flex; flex-direction: column; align-items: flex-start;">
+                        <span style="font-size:0.7rem; font-weight:bold;">${user.displayName}</span>
+                        <button class="btn-logout" onclick="logout()">Log Out</button>
+                    </div>
                 </div>
             `;
+            if (currentView !== 'topup') {
+                document.getElementById('fabAdd').style.display = 'flex';
+            }
+            loadHistoryByEmail(user.email);
+            // Refresh data saat login status berubah
+            filterJB();
+            filterGrup();
         } else {
             area.innerHTML = `<button onclick="loginGoogle()" class="btn-login">Login Google</button>`;
+            document.getElementById('fabAdd').style.display = 'none';
         }
     });
 
@@ -470,12 +627,77 @@
         openAddModal();
     }
 
+    // --- HISTORY LOGIC ---
+    function switchTabNav(tab) {
+        document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+        document.querySelectorAll('.view-section').forEach(s => s.classList.remove('active'));
+        
+        // Sembunyikan form order jika ada
+        document.getElementById('mainOrderForm').style.display = 'none';
+
+        if(tab === 'home') {
+            document.getElementById('navHome').classList.add('active');
+            document.getElementById('sectionHome').classList.add('active');
+            // Pastikan konten beranda (game) muncul kembali
+            document.getElementById('homeMainContent').style.display = 'block';
+            document.getElementById('sectionTopup').classList.add('active');
+            // Reset tab menu game agar aktif
+            document.querySelectorAll('.nav-tab-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById('btnTopupTab').classList.add('active');
+            currentView = 'topup';
+        } else {
+            document.getElementById('navHistory').classList.add('active');
+            document.getElementById('sectionHistory').classList.add('active');
+        }
+    }
+
+    function loadHistoryByEmail(email) {
+        db.collection("success_orders").where("email", "==", email).orderBy("confirm_at", "desc").onSnapshot(snap => {
+            renderHistoryUI(snap);
+        });
+    }
+
+    function loadHistoryByWA() {
+        const wa = document.getElementById('userWA').value;
+        if(wa.length > 5) {
+            db.collection("success_orders").where("whatsapp", "==", wa).orderBy("confirm_at", "desc").onSnapshot(snap => {
+                renderHistoryUI(snap);
+            });
+        }
+    }
+
+    function renderHistoryUI(snap) {
+        const area = document.getElementById('historyDisplayArea');
+        if(snap.empty) {
+            area.innerHTML = '<center><p style="color: #94a3b8; font-size: 0.8rem; margin-top:20px;">Belum ada riwayat transaksi sukses.</p></center>';
+            return;
+        }
+        area.innerHTML = `<p style="font-size: 0.7rem; color: #94a3b8; margin-bottom: 10px;">Total transaksi: ${snap.size} kali</p>`;
+        snap.forEach(doc => {
+            const d = doc.data();
+            area.innerHTML += `
+                <div class="history-card">
+                    <div class="history-header">
+                        <span style="font-size: 0.8rem; font-weight: bold; color: var(--primary);">${d.game}</span>
+                        <span class="status-success">SUKSES</span>
+                    </div>
+                    <div style="font-size: 0.75rem; color: white;">
+                        <p>Produk: <b>${d.paket}</b></p>
+                        <p>Player ID: ${d.player_id}</p>
+                        <p>Harga: Rp ${parseInt(d.harga).toLocaleString()}</p>
+                        <p style="font-size: 0.65rem; color: #94a3b8; margin-top: 5px;">Selesai pada: ${d.confirm_at}</p>
+                    </div>
+                </div>
+            `;
+        });
+    }
+
     db.collection("success_orders").onSnapshot(snap => {
         snap.docChanges().forEach(change => {
             if (change.type === "added") {
                 const d = change.doc.data();
                 const inputWA = document.getElementById('userWA').value;
-                if(d.whatsapp === inputWA) {
+                if(d.whatsapp === inputWA || (auth.currentUser && d.email === auth.currentUser.email)) {
                     showSuccessPopup(d);
                 }
             }
@@ -502,23 +724,32 @@
 
     // --- DATABASE LENGKAP ---
     const dataML = [
-        {n: "3 DM", p: 1500, i: "dmml.png"}, {n: "11 DM", p: 3500, i: "dmml.png"},
-        {n: "25 DM", p: 8000, i: "dmml.png"}, {n: "85 DM", p: 23000, i: "dmml.png"},
-        {n: "170 DM", p: 46000, i: "dmml.png"}, {n: "296 DM", p: 80000, i: "dmml.png"},
-        {n: "568 DM", p: 155000, i: "dmml.png"}, {n: "875 DM", p: 235000, i: "dmml.png"},
-        {n: "2010 DM", p: 540000, i: "dmml.png"}, {n: "4020 DM", p: 1050000, i: "dmml.png"}
+        {n: "3 DM (2+1 Bonus)", p: 1500, i: "dmml.png"}, {n: "5 DM (5+0 Bonus)", p: 2000, i: "dmml.png"},
+        {n: "12 DM (11+1 Bonus)", p: 3500, i: "dmml.png"}, {n: "19 DM (17+2 Bonus)", p: 5500, i: "dmml.png"},
+        {n: "28 DM (25+3 Bonus)", p: 8000, i: "dmml.png"}, {n: "44 DM (40+4 Bonus)", p: 12500, i: "dmml.png"},
+        {n: "59 DM (53+6 Bonus)", p: 16500, i: "dmml.png"}, {n: "85 DM (77+8 Bonus)", p: 23000, i: "dmml.png"},
+        {n: "170 DM (154+16 Bonus)", p: 46000, i: "dmml.png"}, {n: "240 DM (217+23 Bonus)", p: 65000, i: "dmml.png"},
+        {n: "296 DM (256+40 Bonus)", p: 80000, i: "dmml.png"}, {n: "408 DM (367+41 Bonus)", p: 110000, i: "dmml.png"},
+        {n: "568 DM (503+65 Bonus)", p: 155000, i: "dmml.png"}, {n: "875 DM (774+101 Bonus)", p: 235000, i: "dmml.png"},
+        {n: "1159 DM (1026+133 Bonus)", p: 310000, i: "dmml.png"}, {n: "2010 DM (1708+302 Bonus)", p: 540000, i: "dmml.png"},
+        {n: "4830 DM (4096+734 Bonus)", p: 1250000, i: "dmml.png"}
     ];
     const dataMemberML = [
         {n: "Weekly Diamond Pass", p: 28200, i: "wdp.png"},
-        {n: "WDP x2", p: 56000, i: "wdp.png"}, {n: "WDP x3", p: 83000, i: "wdp.png"},
-        {n: "WDP x4", p: 110000, i: "wdp.png"}, {n: "WDP x5", p: 138000, i: "wdp.png"},
+        {n: "Weekly Diamond Pass x2", p: 56000, i: "wdp.png"}, 
+        {n: "Weekly Diamond Pass x3", p: 83000, i: "wdp.png"},
+        {n: "Weekly Diamond Pass x4", p: 110000, i: "wdp.png"},
         {n: "Twilight Pass", p: 150000, i: "tp.png"}
     ];
     const dataFF = [
         {n: "5 DM", p: 1000, i: "dmff.png"}, {n: "12 DM", p: 2000, i: "dmff.png"},
-        {n: "70 DM", p: 9500, i: "dmff.png"}, {n: "140 DM", p: 19000, i: "dmff.png"},
-        {n: "355 DM", p: 46000, i: "dmff.png"}, {n: "720 DM", p: 92000, i: "dmff.png"},
-        {n: "1440 DM", p: 185000, i: "dmff.png"}, {n: "2180 DM", p: 280000, i: "dmff.png"}
+        {n: "50 DM", p: 7000, i: "dmff.png"}, {n: "70 DM", p: 9500, i: "dmff.png"},
+        {n: "100 DM", p: 13500, i: "dmff.png"}, {n: "140 DM", p: 19000, i: "dmff.png"},
+        {n: "210 DM", p: 28000, i: "dmff.png"}, {n: "355 DM", p: 46000, i: "dmff.png"},
+        {n: "500 DM", p: 65000, i: "dmff.png"}, {n: "720 DM", p: 92000, i: "dmff.png"},
+        {n: "1000 DM", p: 130000, i: "dmff.png"}, {n: "1440 DM", p: 185000, i: "dmff.png"},
+        {n: "2180 DM", p: 280000, i: "dmff.png"}, {n: "3640 DM", p: 460000, i: "dmff.png"},
+        {n: "7290 DM", p: 910000, i: "dmff.png"}
     ];
     const dataMemberFF = [
         {n: "Booyah Pass", p: 45000, i: "bp.png"},
@@ -527,12 +758,49 @@
         {n: "Membership Bulanan", p: 150000, i: "bm.png"}
     ];
     const dataLain = {
-        "PUBG Mobile": [{n: "30 UC", p: 7000, i: "uc.png"}, {n: "60 UC", p: 14000, i: "uc.png"}, {n: "325 UC", p: 70000, i: "uc.png"}, {n: "660 UC", p: 145000, i: "uc.png"}],
-        "Roblox": [{n: "80 Robux", p: 15000, i: "rbx.png"}, {n: "400 Robux", p: 75000, i: "rbx.png"}, {n: "800 Robux", p: 145000, i: "rbx.png"}],
-        "Genshin Impact": [{n: "60 Crystal", p: 16000, i: "cl.png"}, {n: "300 Crystal", p: 79000, i: "cl.png"}, {n: "980 Crystal", p: 245000, i: "cl.png"}],
-        "Honor of Kings": [{n: "17 Tokens", p: 4500, i: "tkn.png"}, {n: "88 Tokens", p: 19000, i: "tkn.png"}, {n: "257 Tokens", p: 55000, i: "tkn.png"}],
-        "COD Mobile": [{n: "31 CP", p: 5000, i: "cp.png"}, {n: "63 CP", p: 10000, i: "cp.png"}, {n: "128 CP", p: 20000, i: "cp.png"}]
+        "PUBG Mobile": [
+            {n: "30 UC", p: 7000, i: "uc.png"}, {n: "60 UC", p: 14000, i: "uc.png"}, 
+            {n: "325 UC", p: 70000, i: "uc.png"}, {n: "660 UC", p: 145000, i: "uc.png"},
+            {n: "1800 UC", p: 350000, i: "uc.png"}, {n: "3850 UC", p: 720000, i: "uc.png"}
+        ],
+        "Roblox": [
+            {n: "80 Robux", p: 15000, i: "rbx.png"}, {n: "200 Robux", p: 40000, i: "rbx.png"},
+            {n: "400 Robux", p: 75000, i: "rbx.png"}, {n: "800 Robux", p: 145000, i: "rbx.png"},
+            {n: "1700 Robux", p: 320000, i: "rbx.png"}, {n: "4500 Robux", p: 850000, i: "rbx.png"}
+        ],
+        "Genshin Impact": [
+            {n: "60 Crystals", p: 12241, i: "cl.png"}, 
+            {n: "60 Chronal Nexus", p: 14619, i: "cl.png"},
+            {n: "300 + 30 Crystals", p: 57466, i: "cl.png"},
+            {n: "300 + 30 Chronal Nexus", p: 70348, i: "cl.png"},
+            {n: "980 + 110 Crystals", p: 175543, i: "cl.png"},
+            {n: "980 + 110 Chronal Nexus", p: 206487, i: "cl.png"},
+            {n: "3280 + 600 Chronal Nexus", p: 695241, i: "cl.png"}
+        ],
+        "Honor of Kings": [
+            {n: "17 Tokens", p: 4500, i: "tkn.png"}, {n: "88 Tokens", p: 19000, i: "tkn.png"}, 
+            {n: "257 Tokens", p: 55000, i: "tkn.png"}, {n: "432 Tokens", p: 90000, i: "tkn.png"}
+        ],
+        "COD Mobile": [
+            {n: "31 CP", p: 5000, i: "cp.png"}, {n: "63 CP", p: 10000, i: "cp.png"}, 
+            {n: "128 CP", p: 20000, i: "cp.png"}, {n: "320 CP", p: 50000, i: "cp.png"},
+            {n: "645 CP", p: 100000, i: "cp.png"}, {n: "1373 CP", p: 200000, i: "cp.png"}
+        ]
     };
+    
+    const dataMemberLain = {
+        "Genshin Impact": [
+            {n: "Blessing Welkin Moon", p: 58000, i: "bwm.png"},
+            {n: "Blessing Welkin Moon x2", p: 113931, i: "bwm.png"},
+            {n: "Blessing Welkin Moon x3", p: 171397, i: "bwm.png"},
+            {n: "Blessing Welkin Moon x4", p: 227862, i: "bwm.png"}
+        ],
+        "Honor of Kings": [
+            {n: "Weekly Card", p: 15000, i: "wc.png"}, 
+            {n: "Weekly Card Premium", p: 45000, i: "wcp.png"}
+        ]
+    };
+
     const dataHosting = [
         {n: "Small Node 1GB", p: 5000, cpu: "100%", ram: "1 GB", disk: "2 GB"},
         {n: "Medium Node 2GB", p: 10000, cpu: "150%", ram: "2 GB", disk: "5 GB"},
@@ -559,6 +827,7 @@
     }
 
     function updateSliderPosition() {
+        if(!bannerWrapper) return;
         bannerWrapper.style.transform = `translateX(-${currentIndex * 100}%)`;
         const dots = document.querySelectorAll('.dot');
         dots.forEach((dot, i) => dot.classList.toggle('active', i === (currentIndex - 1 + images.length) % images.length));
@@ -567,11 +836,11 @@
     function nextSlide() {
         if (currentIndex >= images.length + 1) return;
         currentIndex++;
-        bannerWrapper.style.transition = 'transform 0.5s ease-out';
+        if(bannerWrapper) bannerWrapper.style.transition = 'transform 0.5s ease-out';
         updateSliderPosition();
         if (currentIndex === images.length + 1) {
             setTimeout(() => {
-                bannerWrapper.style.transition = 'none';
+                if(bannerWrapper) bannerWrapper.style.transition = 'none';
                 currentIndex = 1;
                 updateSliderPosition();
             }, 500);
@@ -655,7 +924,7 @@
         currentView = view;
         document.querySelectorAll('.nav-tab-btn').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
-        document.querySelectorAll('.view-section').forEach(s => s.classList.remove('active'));
+        document.querySelectorAll('#sectionHome .view-section').forEach(s => s.classList.remove('active'));
         const fab = document.getElementById('fabAdd');
         if(view === 'topup') { 
             document.getElementById('sectionTopup').classList.add('active'); 
@@ -663,13 +932,13 @@
         }
         else if(view === 'jb') { 
             document.getElementById('sectionJB').classList.add('active'); 
-            renderJB(); 
-            fab.style.display = 'flex'; 
+            fab.style.display = auth.currentUser ? 'flex' : 'none'; 
+            filterJB();
         }
         else if(view === 'grup') { 
             document.getElementById('sectionGrup').classList.add('active'); 
-            renderGrup(); 
-            fab.style.display = 'flex'; 
+            fab.style.display = auth.currentUser ? 'flex' : 'none'; 
+            filterGrup();
         }
     }
 
@@ -686,7 +955,8 @@
         if(game === 'Mobile Legends') area.innerHTML = `<div class="input-ml"><input type="number" id="id1" placeholder="User ID"><input type="number" id="id2" placeholder="Zone"></div>`;
         else if(game === 'Minecraft Hosting') area.innerHTML = `<input type="text" id="id1" placeholder="Isi Gmail">`;
         else area.innerHTML = `<input type="text" id="id1" placeholder="Masukkan Player ID">`;
-        const hasMember = ['Mobile Legends', 'Free Fire', 'Honor of Kings'].includes(game);
+        
+        const hasMember = ['Mobile Legends', 'Free Fire', 'Honor of Kings', 'Genshin Impact'].includes(game);
         document.getElementById('tabWrapper').style.display = hasMember ? 'flex' : 'none';
         switchTab('dm');
     }
@@ -711,7 +981,17 @@
         }
         const grid = document.createElement('div');
         grid.className = "price-grid";
-        let items = (curG === 'Mobile Legends') ? (type === 'dm' ? dataML : dataMemberML) : (curG === 'Free Fire' ? (type === 'dm' ? dataFF : dataMemberFF) : (dataLain[curG] || []));
+        
+        let items = [];
+        if(type === 'dm') {
+            items = (curG === 'Mobile Legends') ? dataML : (curG === 'Free Fire' ? dataFF : (dataLain[curG] || []));
+        } else {
+            if(curG === 'Mobile Legends') items = dataMemberML;
+            else if(curG === 'Free Fire') items = dataMemberFF;
+            else if(curG === 'Genshin Impact') items = dataMemberLain["Genshin Impact"];
+            else if(curG === 'Honor of Kings') items = dataMemberLain["Honor of Kings"];
+        }
+
         items.forEach(it => {
             const div = document.createElement('div');
             div.className = "price-item";
@@ -813,8 +1093,6 @@
     }
 
     // --- JB & GRUP FIREBASE ---
-    function renderJB() { /* placeholder for real-time listener */ }
-
     async function saveJB() {
         const id = document.getElementById('editJbId').value;
         const file = document.getElementById('jbInputImg').files[0];
@@ -832,6 +1110,7 @@
                 price: parseInt(price),
                 wa: wa,
                 seller: auth.currentUser.displayName,
+                seller_email: auth.currentUser.email,
                 timestamp: firebase.firestore.FieldValue.serverTimestamp()
             };
             if(imgData) data.img = imgData;
@@ -845,6 +1124,7 @@
                 ardhanToast("Terposting!");
             }
             closeModals();
+            filterJB();
         };
 
         if(file) {
@@ -853,6 +1133,14 @@
             reader.readAsDataURL(file);
         } else {
             processSave(null);
+        }
+    }
+
+    async function deleteJB(id) {
+        if(confirm("Hapus postingan ini?")) {
+            await db.collection("jb_accounts").doc(id).delete();
+            ardhanToast("Dihapus!");
+            filterJB();
         }
     }
 
@@ -870,18 +1158,8 @@
     }
 
     db.collection("jb_accounts").orderBy("timestamp", "desc").onSnapshot(snap => {
-        const area = document.getElementById('jbDisplayArea');
-        if(!area) return;
-        area.innerHTML = "";
-        snap.forEach(doc => {
-            const item = doc.data();
-            const id = doc.id;
-            let editBtn = (auth.currentUser && auth.currentUser.displayName === item.seller) ? `<button class="btn-edit-item" onclick='editJB("${id}", ${JSON.stringify(item).replace(/'/g, "&apos;")})'>Edit</button>` : "";
-            area.innerHTML += `<div class="jb-card">${editBtn}<img src="${item.img}"><div class="jb-info"><div class="jb-game">${item.game}</div><div class="jb-desc">${item.desc}</div><div class="jb-price">Rp ${item.price.toLocaleString()}</div><a href="https://wa.me/${item.wa}" class="jb-btn-wa">CHAT PENJUAL</a></div></div>`;
-        });
+        filterJB();
     });
-
-    function renderGrup() { /* placeholder for real-time listener */ }
 
     async function saveGrup() {
         const id = document.getElementById('editGrupId').value;
@@ -897,6 +1175,7 @@
                 name: n,
                 link: l,
                 desc: d || "",
+                owner_email: auth.currentUser.email,
                 timestamp: firebase.firestore.FieldValue.serverTimestamp()
             };
             if(imgData) data.img = imgData;
@@ -910,6 +1189,7 @@
                 ardhanToast("Grup Ditambahkan!");
             }
             closeModals();
+            filterGrup();
         };
 
         if(f) {
@@ -918,6 +1198,14 @@
             r.readAsDataURL(f);
         } else {
             processSave(null);
+        }
+    }
+
+    async function deleteGrup(id) {
+        if(confirm("Hapus grup ini dari list?")) {
+            await db.collection("groups").doc(id).delete();
+            ardhanToast("Grup Dihapus!");
+            filterGrup();
         }
     }
 
@@ -933,45 +1221,70 @@
     }
 
     db.collection("groups").orderBy("timestamp", "desc").onSnapshot(snap => {
-        const area = document.getElementById('grupDisplayArea');
-        if(!area) return;
-        area.innerHTML = "";
-        snap.forEach(doc => {
-            const item = doc.data();
-            const id = doc.id;
-            let editBtn = (auth.currentUser) ? `<button class="btn-edit-grup" onclick='editGrup("${id}", ${JSON.stringify(item).replace(/'/g, "&apos;")})'>Edit</button>` : "";
-            area.innerHTML += `<div class="grup-item"><img src="${item.img}" class="grup-img"><div style="flex:1"><b>${item.name}</b><br><small style="color:#94a3b8">${item.desc || ''}</small></div><div style="display:flex; gap:5px"><a href="${item.link}" target="_blank" class="btn-join">GABUNG</a>${editBtn}</div></div>`;
-        });
+        filterGrup();
     });
 
     function filterJB() {
         const p = parseInt(document.getElementById('searchJbPrice').value);
         const g = document.getElementById('searchJbGame').value;
-        let query = db.collection("jb_accounts");
-        if (g !== 'all') query = query.where("game", "==", g);
-        query.get().then(snap => {
-            const area = document.getElementById('jbDisplayArea');
+        const area = document.getElementById('jbDisplayArea');
+        if(!area) return;
+
+        db.collection("jb_accounts").orderBy("timestamp", "desc").get().then(snap => {
             area.innerHTML = "";
+            let hasContent = false;
             snap.forEach(doc => {
                 const item = doc.data();
-                if (!p || item.price <= p) {
-                   area.innerHTML += `<div class="jb-card"><img src="${item.img}"><div class="jb-info"><div class="jb-game">${item.game}</div><div class="jb-desc">${item.desc}</div><div class="jb-price">Rp ${item.price.toLocaleString()}</div><a href="https://wa.me/${item.wa}" class="jb-btn-wa">CHAT PENJUAL</a></div></div>`;
-                }
+                const id = doc.id;
+                
+                // FILTER ADMIN VS PUBLIK
+                const isAdminPost = (item.seller_email === adminEmail);
+                if (activeJbSubTab === 'admin' && !isAdminPost) return;
+                if (activeJbSubTab === 'public' && isAdminPost) return;
+
+                // FILTER HARGA & GAME
+                if (g !== 'all' && item.game !== g) return;
+                if (p && item.price > p) return;
+
+                hasContent = true;
+                const isOwner = auth.currentUser && (auth.currentUser.email === item.seller_email);
+                let editBtn = isOwner ? `<button class="btn-edit-item" onclick='editJB("${id}", ${JSON.stringify(item).replace(/'/g, "&apos;")})'>Edit</button>` : "";
+                let delBtn = isOwner ? `<button class="btn-delete-post" onclick="deleteJB('${id}')">X</button>` : "";
+                
+                area.innerHTML += `<div class="jb-card">${delBtn}${editBtn}<img src="${item.img}"><div class="jb-info"><div class="jb-game">${item.game}</div><div class="jb-desc">${item.desc}</div><div class="jb-price">Rp ${item.price.toLocaleString()}</div><a href="https://wa.me/${item.wa}" class="jb-btn-wa">CHAT PENJUAL</a></div></div>`;
             });
+            if(!hasContent) area.innerHTML = `<center><p style='color:#94a3b8; font-size:0.8rem; grid-column: 1/-1;'>Belum ada postingan di kategori ini.</p></center>`;
         });
     }
 
     function filterGrup() {
         const search = document.getElementById('searchGrupName').value.toLowerCase();
-        db.collection("groups").get().then(snap => {
-            const area = document.getElementById('grupDisplayArea');
+        const area = document.getElementById('grupDisplayArea');
+        if(!area) return;
+
+        db.collection("groups").orderBy("timestamp", "desc").get().then(snap => {
             area.innerHTML = "";
+            let hasContent = false;
             snap.forEach(doc => {
                 const item = doc.data();
-                if(item.name.toLowerCase().includes(search)) {
-                    area.innerHTML += `<div class="grup-item"><img src="${item.img}" class="grup-img"><div style="flex:1"><b>${item.name}</b><br><small style="color:#94a3b8">${item.desc || ''}</small></div><div style="display:flex; gap:5px"><a href="${item.link}" target="_blank" class="btn-join">GABUNG</a></div></div>`;
-                }
+                const id = doc.id;
+
+                // FILTER ADMIN VS PUBLIK
+                const isAdminPost = (item.owner_email === adminEmail);
+                if (activeGrupSubTab === 'admin' && !isAdminPost) return;
+                if (activeGrupSubTab === 'public' && isAdminPost) return;
+
+                // FILTER SEARCH
+                if(search && !item.name.toLowerCase().includes(search)) return;
+
+                hasContent = true;
+                const isOwner = auth.currentUser && (auth.currentUser.email === item.owner_email);
+                let editBtn = isOwner ? `<button class="btn-edit-grup" onclick='editGrup("${id}", ${JSON.stringify(item).replace(/'/g, "&apos;")})'>Edit</button>` : "";
+                let delBtn = isOwner ? `<button class="btn-delete-grup-post" onclick="deleteGrup('${id}')">Hapus</button>` : "";
+                
+                area.innerHTML += `<div class="grup-item"><img src="${item.img}" class="grup-img"><div style="flex:1"><b>${item.name}</b><br><small style="color:#94a3b8">${item.desc || ''}</small></div><div style="display:flex; gap:5px"><a href="${item.link}" target="_blank" class="btn-join">GABUNG</a>${editBtn}${delBtn}</div></div>`;
             });
+            if(!hasContent) area.innerHTML = `<center><p style='color:#94a3b8; font-size:0.8rem;'>Belum ada grup di kategori ini.</p></center>`;
         });
     }
 
@@ -996,10 +1309,17 @@
     }
     
     function backToMenu() {
+        document.getElementById('sectionHome').style.display = 'block';
+        document.getElementById('homeMainContent').style.display = 'block';
         document.getElementById('sectionTopup').style.display = 'block';
         document.getElementById('bannerSlider').style.display = 'block';
         document.querySelector('.main-nav-tabs').style.display = 'flex';
         document.getElementById('mainOrderForm').style.display = 'none';
+        
+        // Reset tab Beranda
+        document.querySelectorAll('.nav-tab-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById('btnTopupTab').classList.add('active');
+        currentView = 'topup';
         initSlider();
     }
     
