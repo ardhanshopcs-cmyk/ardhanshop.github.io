@@ -106,6 +106,22 @@
         }
         .btn-alert-ok { background: var(--primary); border: none; padding: 10px 30px; border-radius: 10px; font-weight: bold; cursor: pointer; color: #000; }
 
+        /* MODERN CONFIRM MODAL */
+        .ardhan-confirm-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85); backdrop-filter: blur(8px);
+            display: none; justify-content: center; align-items: center; z-index: 10000;
+            animation: fadeIn 0.3s ease;
+        }
+        .ardhan-confirm-card {
+            background: var(--card-bg); border: 2px solid var(--error);
+            padding: 30px; border-radius: 20px; width: 85%; max-width: 350px;
+            text-align: center; transform: scale(0.8); animation: popScale 0.3s forwards;
+        }
+        .confirm-btns { display: flex; gap: 10px; margin-top: 20px; }
+        .btn-confirm-yes { flex: 1; background: var(--error); color: white; border: none; padding: 12px; border-radius: 10px; font-weight: bold; cursor: pointer; }
+        .btn-confirm-no { flex: 1; background: #334155; color: white; border: none; padding: 12px; border-radius: 10px; font-weight: bold; cursor: pointer; }
+
         .toast-container { position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%); z-index: 10000; }
         .toast { background: var(--card-bg); color: white; padding: 12px 25px; border-radius: 50px; border: 1px solid var(--primary); margin-top: 10px; animation: slideUp 0.4s ease; display: flex; align-items: center; gap: 10px; }
 
@@ -282,6 +298,17 @@
     </div>
 </div>
 
+<div id="ardhanConfirm" class="ardhan-confirm-overlay">
+    <div class="ardhan-confirm-card">
+        <h3 style="color: var(--error); margin-bottom: 10px;">Konfirmasi</h3>
+        <p id="ardhanConfirmMsg" style="font-size: 0.9rem; color: #cbd5e1;">Apakah Anda yakin?</p>
+        <div class="confirm-btns">
+            <button class="btn-confirm-no" onclick="closeArdhanConfirm(false)">BATAL</button>
+            <button class="btn-confirm-yes" onclick="closeArdhanConfirm(true)">YA, HAPUS</button>
+        </div>
+    </div>
+</div>
+
 <div class="toast-container" id="toastContainer"></div>
 
 <nav>
@@ -290,7 +317,7 @@
         <div class="logo-text">ARDHAN SHOP</div>
     </div>
     <div id="authArea">
-        <button onclick="loginGoogle()" class="btn-login">Login Google</button>
+        <button onclick="openAuthModal()" class="btn-login">Login / Daftar</button>
     </div>
 </nav>
 
@@ -448,6 +475,37 @@
     <footer>© 2024 Ardhan Shop. Fast & Legal.</footer>
 </div>
 
+<div id="authModal" class="form-modal">
+    <div class="form-container">
+        <h2 id="authTitle" style="color:var(--primary)">Login Ke Ardhan Shop</h2><br>
+        
+        <div id="regoFields" style="display:none">
+            <input type="text" id="regName" placeholder="Nama Lengkap">
+            <input type="number" id="regWA" placeholder="Nomor WhatsApp (628xxx)">
+        </div>
+        
+        <div style="margin-bottom: 10px;">
+            <input type="email" id="authEmail" placeholder="Alamat Gmail">
+        </div>
+        <div style="margin-bottom: 15px;">
+            <input type="password" id="authPassword" placeholder="Kata Sandi">
+        </div>
+        
+        <button id="btnAuthMain" class="btn-order" onclick="handleAuth()">LOGIN SEKARANG</button>
+        
+        <p style="text-align:center; margin:15px 0; font-size:0.8rem; color:#94a3b8">Atau</p>
+        
+        <button onclick="loginGoogle()" style="background:white; color:black; display:flex; align-items:center; justify-content:center; gap:10px" class="btn-order">
+            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="20"> Login pake Google
+        </button>
+
+        <p id="switchAuthText" style="text-align:center; color:var(--primary); margin-top:15px; cursor:pointer; font-size:0.8rem;" onclick="toggleAuthMode()">
+            Belum punya akun? Daftar di sini
+        </p>
+        <p style="text-align:center; color:var(--error); margin-top:10px; cursor:pointer;" onclick="closeModals()">Batal</p>
+    </div>
+</div>
+
 <div id="modalAddJB" class="form-modal">
     <div class="form-container">
         <h2 id="jbModalTitle" style="color:var(--primary)">Jual Akun Game</h2><br>
@@ -527,12 +585,10 @@
     const auth = firebase.auth();
 
     // VARIABEL ADMIN (GANTI DENGAN EMAIL ADMIN KAMU)
-    const adminEmail = "GANTI_DENGAN_EMAIL_ADMIN_KAMU@gmail.com";
+    const adminEmail = "nairadafania01@gmail.com";
     let activeJbSubTab = "public"; // public atau admin
     let activeGrupSubTab = "public"; // public atau admin
-    
-    // --- LOGIKA CLEANING: HANYA TAMPILKAN POSTINGAN SETELAH DETIK INI ---
-    const cleanupTime = new Date(); 
+    let isRegisterMode = false;
 
     // SINKRONISASI BANNER & QRIS DARI ADMIN
     db.collection("settings").onSnapshot(snap => {
@@ -552,6 +608,7 @@
         const wrapper = document.getElementById('bannerWrapper');
         if(imgList.length > 0) {
             wrapper.innerHTML = imgList.map(img => `<img src="${img}">`).join('');
+            initSlider();
         }
     }
 
@@ -561,26 +618,67 @@
             activeJbSubTab = target;
             document.getElementById('btnJbPublic').classList.toggle('active', target === 'public');
             document.getElementById('btnJbAdmin').classList.toggle('active', target === 'admin');
-            // Logika Sembunyikan/Tampilkan Warning
             document.getElementById('jbPublicWarning').style.display = (target === 'public') ? 'flex' : 'none';
             filterJB();
         } else {
             activeGrupSubTab = target;
             document.getElementById('btnGrupPublic').classList.toggle('active', target === 'public');
             document.getElementById('btnGrupAdmin').classList.toggle('active', target === 'admin');
-            // Logika Sembunyikan/Tampilkan Warning
             document.getElementById('grupPublicWarning').style.display = (target === 'public') ? 'flex' : 'none';
             filterGrup();
         }
     }
 
-    // --- AUTH LOGIC (FIXED) ---
+    // --- AUTH LOGIC (MANUAL & GOOGLE) ---
+    function toggleAuthMode() {
+        isRegisterMode = !isRegisterMode;
+        document.getElementById('authTitle').innerText = isRegisterMode ? "Daftar Akun Baru" : "Login Ke Ardhan Shop";
+        document.getElementById('btnAuthMain').innerText = isRegisterMode ? "DAFTAR SEKARANG" : "LOGIN SEKARANG";
+        document.getElementById('regoFields').style.display = isRegisterMode ? "block" : "none";
+        document.getElementById('switchAuthText').innerText = isRegisterMode ? "Sudah punya akun? Login di sini" : "Belum punya akun? Daftar di sini";
+    }
+
+    function openAuthModal() {
+        document.getElementById('authModal').style.display = 'block';
+    }
+
+    async function handleAuth() {
+        const email = document.getElementById('authEmail').value;
+        const pass = document.getElementById('authPassword').value;
+        
+        if(!email || !pass) return ardhanAlert("Oops", "Email dan Sandi harus diisi!");
+
+        try {
+            if(isRegisterMode) {
+                const name = document.getElementById('regName').value;
+                const wa = document.getElementById('regWA').value;
+                if(!name || !wa) return ardhanAlert("Oops", "Nama dan WA wajib diisi!");
+
+                const userCredential = await auth.createUserWithEmailAndPassword(email, pass);
+                await userCredential.user.updateProfile({ displayName: name });
+                await db.collection("users").doc(userCredential.user.uid).set({
+                    nama: name,
+                    whatsapp: wa,
+                    email: email,
+                    createdAt: new Date().toLocaleString()
+                });
+                ardhanToast("Pendaftaran Berhasil!");
+            } else {
+                await auth.signInWithEmailAndPassword(email, pass);
+                ardhanToast("Berhasil Login!");
+            }
+            closeModals();
+        } catch (error) {
+            ardhanAlert("Gagal", error.message);
+        }
+    }
+
     function loginGoogle() {
         const provider = new firebase.auth.GoogleAuthProvider();
         auth.signInWithPopup(provider)
             .then((result) => {
                 ardhanToast("Selamat Datang, " + result.user.displayName);
-                loadHistoryByEmail(result.user.email);
+                closeModals();
             })
             .catch(err => {
                 ardhanAlert("Error", err.message);
@@ -597,9 +695,10 @@
     auth.onAuthStateChanged(user => {
         const area = document.getElementById('authArea');
         if(user) {
+            const photo = user.photoURL || 'https://www.w3schools.com/howto/img_avatar.png';
             area.innerHTML = `
                 <div class="user-profile">
-                    <img src="${user.photoURL}" class="user-img">
+                    <img src="${photo}" class="user-img">
                     <div style="display: flex; flex-direction: column; align-items: flex-start;">
                         <span style="font-size:0.7rem; font-weight:bold;">${user.displayName}</span>
                         <button class="btn-logout" onclick="logout()">Log Out</button>
@@ -610,21 +709,19 @@
                 document.getElementById('fabAdd').style.display = 'flex';
             }
             loadHistoryByEmail(user.email);
-            // Refresh data saat login status berubah
             filterJB();
             filterGrup();
         } else {
-            area.innerHTML = `<button onclick="loginGoogle()" class="btn-login">Login Google</button>`;
+            area.innerHTML = `<button onclick="openAuthModal()" class="btn-login">Login / Daftar</button>`;
             document.getElementById('fabAdd').style.display = 'none';
         }
     });
 
     function checkAuthAndOpenModal() {
         if (!auth.currentUser) {
-            ardhanAlert("Akses Ditolak", "Silakan Login Google terlebih dahulu untuk Jual Akun atau Buat Grup!");
+            ardhanAlert("Akses Ditolak", "Silakan Login terlebih dahulu untuk Jual Akun atau Buat Grup!");
             return;
         }
-        // Reset form to add mode
         document.getElementById('editJbId').value = "";
         document.getElementById('jbModalTitle').innerText = "Jual Akun Game";
         document.getElementById('btnSaveJB').innerText = "POSTING SEKARANG";
@@ -638,17 +735,13 @@
     function switchTabNav(tab) {
         document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
         document.querySelectorAll('.view-section').forEach(s => s.classList.remove('active'));
-        
-        // Sembunyikan form order jika ada
         document.getElementById('mainOrderForm').style.display = 'none';
 
         if(tab === 'home') {
             document.getElementById('navHome').classList.add('active');
             document.getElementById('sectionHome').classList.add('active');
-            // Pastikan konten beranda (game) muncul kembali
             document.getElementById('homeMainContent').style.display = 'block';
             document.getElementById('sectionTopup').classList.add('active');
-            // Reset tab menu game agar aktif
             document.querySelectorAll('.nav-tab-btn').forEach(b => b.classList.remove('active'));
             document.getElementById('btnTopupTab').classList.add('active');
             currentView = 'topup';
@@ -911,6 +1004,19 @@
         setTimeout(() => { toast.style.opacity = '0'; setTimeout(() => toast.remove(), 400); }, 3000);
     }
 
+    // --- MODERN CONFIRM SYSTEM ---
+    let confirmCallback = null;
+    function ardhanConfirm(msg, callback) {
+        document.getElementById('ardhanConfirmMsg').innerText = msg;
+        document.getElementById('ardhanConfirm').style.display = 'flex';
+        confirmCallback = callback;
+    }
+    function closeArdhanConfirm(result) {
+        document.getElementById('ardhanConfirm').style.display = 'none';
+        if(confirmCallback) confirmCallback(result);
+        confirmCallback = null;
+    }
+
     function toggleDropdown(id) { document.getElementById(id).classList.toggle('show'); }
     function setFilter(val, text) {
         document.getElementById('filterGameText').innerText = text;
@@ -1148,11 +1254,13 @@
     }
 
     async function deleteJB(id) {
-        if(confirm("Hapus postingan ini?")) {
-            await db.collection("jb_accounts").doc(id).delete();
-            ardhanToast("Dihapus!");
-            filterJB();
-        }
+        ardhanConfirm("Hapus postingan ini secara permanen?", async (confirmed) => {
+            if(confirmed) {
+                await db.collection("jb_accounts").doc(id).delete();
+                ardhanToast("Dihapus!");
+                filterJB();
+            }
+        });
     }
 
     function editJB(id, data) {
@@ -1217,11 +1325,13 @@
     }
 
     async function deleteGrup(id) {
-        if(confirm("Hapus grup ini dari list?")) {
-            await db.collection("groups").doc(id).delete();
-            ardhanToast("Grup Dihapus!");
-            filterGrup();
-        }
+        ardhanConfirm("Hapus grup ini dari list?", async (confirmed) => {
+            if(confirmed) {
+                await db.collection("groups").doc(id).delete();
+                ardhanToast("Grup Dihapus!");
+                filterGrup();
+            }
+        });
     }
 
     function editGrup(id, data) {
@@ -1251,33 +1361,15 @@
             snap.forEach(doc => {
                 const item = doc.data();
                 const id = doc.id;
-                
-                // FILTER ADMIN VS PUBLIK
                 const isAdminPost = (item.seller_email === adminEmail);
                 if (activeJbSubTab === 'admin' && !isAdminPost) return;
-                
-                // LOGIKA BERSIHKAN: 
-                // Di tab PUBLIK, hanya tampilkan yang timestamp-nya LEBIH BARU dari saat halaman dibuka (cleanupTime)
-                // ATAU yang di-upload oleh user itu sendiri (agar dia bisa lihat hasil upload-nya).
-                if (activeJbSubTab === 'public') {
-                    const postTime = item.timestamp ? item.timestamp.toDate() : new Date();
-                    const isNewPost = postTime >= cleanupTime;
-                    const isMyPost = auth.currentUser && item.seller_email === auth.currentUser.email;
-                    
-                    if (!isNewPost && !isMyPost) return;
-                }
-
-                // FILTER HARGA & GAME
+                if (activeJbSubTab === 'public' && isAdminPost) return;
                 if (g !== 'all' && item.game !== g) return;
                 if (p && item.price > p) return;
-
                 hasContent = true;
-                
-                // LOGIKA TOMBOL EDIT/HAPUS (KHUSUS PEMILIK)
                 const isOwner = auth.currentUser && (auth.currentUser.email === item.seller_email);
                 let editBtn = isOwner ? `<button class="btn-edit-item" onclick='editJB("${id}", ${JSON.stringify(item).replace(/'/g, "&apos;")})'>Edit</button>` : "";
                 let delBtn = isOwner ? `<button class="btn-delete-post" onclick="deleteJB('${id}')">X</button>` : "";
-                
                 area.innerHTML += `<div class="jb-card">${delBtn}${editBtn}<img src="${item.img}"><div class="jb-info"><div class="jb-game">${item.game}</div><div class="jb-desc">${item.desc}</div><div class="jb-price">Rp ${item.price.toLocaleString()}</div><a href="https://wa.me/${item.wa}" class="jb-btn-wa">CHAT PENJUAL</a></div></div>`;
             });
             if(!hasContent) area.innerHTML = `<center><p style='color:#94a3b8; font-size:0.8rem; grid-column: 1/-1;'>Belum ada postingan di kategori ini.</p></center>`;
@@ -1295,30 +1387,14 @@
             snap.forEach(doc => {
                 const item = doc.data();
                 const id = doc.id;
-
-                // FILTER ADMIN VS PUBLIK
                 const isAdminPost = (item.owner_email === adminEmail);
                 if (activeGrupSubTab === 'admin' && !isAdminPost) return;
-                
-                // LOGIKA BERSIHKAN:
-                if (activeGrupSubTab === 'public') {
-                    const postTime = item.timestamp ? item.timestamp.toDate() : new Date();
-                    const isNewPost = postTime >= cleanupTime;
-                    const isMyPost = auth.currentUser && item.owner_email === auth.currentUser.email;
-                    
-                    if (!isNewPost && !isMyPost) return;
-                }
-
-                // FILTER SEARCH
+                if (activeGrupSubTab === 'public' && isAdminPost) return;
                 if(search && !item.name.toLowerCase().includes(search)) return;
-
                 hasContent = true;
-
-                // LOGIKA TOMBOL EDIT/HAPUS (KHUSUS PEMILIK)
                 const isOwner = auth.currentUser && (auth.currentUser.email === item.owner_email);
                 let editBtn = isOwner ? `<button class="btn-edit-grup" onclick='editGrup("${id}", ${JSON.stringify(item).replace(/'/g, "&apos;")})'>Edit</button>` : "";
                 let delBtn = isOwner ? `<button class="btn-delete-grup-post" onclick="deleteGrup('${id}')">Hapus</button>` : "";
-                
                 area.innerHTML += `<div class="grup-item"><img src="${item.img}" class="grup-img"><div style="flex:1"><b>${item.name}</b><br><small style="color:#94a3b8">${item.desc || ''}</small></div><div style="display:flex; gap:5px"><a href="${item.link}" target="_blank" class="btn-join">GABUNG</a>${editBtn}${delBtn}</div></div>`;
             });
             if(!hasContent) area.innerHTML = `<center><p style='color:#94a3b8; font-size:0.8rem;'>Belum ada grup di kategori ini.</p></center>`;
@@ -1352,8 +1428,6 @@
         document.getElementById('bannerSlider').style.display = 'block';
         document.querySelector('.main-nav-tabs').style.display = 'flex';
         document.getElementById('mainOrderForm').style.display = 'none';
-        
-        // Reset tab Beranda
         document.querySelectorAll('.nav-tab-btn').forEach(b => b.classList.remove('active'));
         document.getElementById('btnTopupTab').classList.add('active');
         currentView = 'topup';
