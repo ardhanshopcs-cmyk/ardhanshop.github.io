@@ -1253,8 +1253,8 @@
                 const isAdminPost = (item.seller_email === adminEmail);
                 if (activeJbSubTab === 'admin' && !isAdminPost) return;
                 
-                // --- PERINTAH MEMBERSIHKAN POSTINGAN PUBLIK ---
-                // Jika tab aktif adalah 'public', kita tidak menampilkan apapun
+                // --- PERINTAH: BERSIHKAN PUBLIK ---
+                // Jika tab aktif adalah PUBLIC, kita abaikan semua data (paksa kosong)
                 if (activeJbSubTab === 'public') return;
 
                 // FILTER HARGA & GAME
@@ -1290,8 +1290,8 @@
                 const isAdminPost = (item.owner_email === adminEmail);
                 if (activeGrupSubTab === 'admin' && !isAdminPost) return;
                 
-                // --- PERINTAH MEMBERSIHKAN POSTINGAN PUBLIK ---
-                // Jika tab aktif adalah 'public', kita tidak menampilkan apapun
+                // --- PERINTAH: BERSIHKAN PUBLIK ---
+                // Jika tab aktif adalah PUBLIC, kita abaikan semua data (paksa kosong)
                 if (activeGrupSubTab === 'public') return;
 
                 // FILTER SEARCH
