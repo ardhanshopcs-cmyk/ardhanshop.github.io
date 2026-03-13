@@ -1252,7 +1252,10 @@
                 // FILTER ADMIN VS PUBLIK
                 const isAdminPost = (item.seller_email === adminEmail);
                 if (activeJbSubTab === 'admin' && !isAdminPost) return;
-                if (activeJbSubTab === 'public' && isAdminPost) return;
+                
+                // --- PERINTAH MEMBERSIHKAN POSTINGAN PUBLIK ---
+                // Jika tab aktif adalah 'public', kita tidak menampilkan apapun
+                if (activeJbSubTab === 'public') return;
 
                 // FILTER HARGA & GAME
                 if (g !== 'all' && item.game !== g) return;
@@ -1286,7 +1289,10 @@
                 // FILTER ADMIN VS PUBLIK
                 const isAdminPost = (item.owner_email === adminEmail);
                 if (activeGrupSubTab === 'admin' && !isAdminPost) return;
-                if (activeGrupSubTab === 'public' && isAdminPost) return;
+                
+                // --- PERINTAH MEMBERSIHKAN POSTINGAN PUBLIK ---
+                // Jika tab aktif adalah 'public', kita tidak menampilkan apapun
+                if (activeGrupSubTab === 'public') return;
 
                 // FILTER SEARCH
                 if(search && !item.name.toLowerCase().includes(search)) return;
