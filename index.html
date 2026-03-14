@@ -197,16 +197,39 @@
 
         .jb-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 15px; }
         .jb-card { background: var(--card-bg); border-radius: 15px; overflow: hidden; border: 1px solid #334155; position: relative; }
-        .jb-card img { width: 100%; height: 110px; object-fit: cover; }
+        .jb-card img.main-img { width: 100%; height: 110px; object-fit: cover; }
         .jb-info { padding: 10px; }
         .jb-price { color: var(--primary); font-weight: bold; font-size: 1rem; }
         .jb-game { font-size: 0.7rem; color: #94a3b8; text-transform: uppercase; font-weight: bold; }
         .jb-desc { font-size: 0.75rem; color: #cbd5e1; margin: 5px 0; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
         .jb-btn-wa { display: block; width: 100%; padding: 8px; background: #25d366; color: white; text-align: center; text-decoration: none; border-radius: 5px; margin-top: 5px; font-size: 0.8rem; font-weight: bold; }
         
+        /* TOMBOL CHAT BARU */
+        .jb-btn-chat { display: block; width: 100%; padding: 8px; background: #3b82f6; color: white; text-align: center; border: none; border-radius: 5px; margin-top: 5px; font-size: 0.8rem; font-weight: bold; cursor: pointer; }
+
+        /* SELLER BADGE STYLE (FIXED: KECIL DI POJOK ATAS) */
+        .seller-badge-mini { 
+            position: absolute; top: 8px; left: 8px; 
+            background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(4px);
+            padding: 4px 8px; border-radius: 20px; 
+            display: flex; align-items: center; gap: 5px; z-index: 5;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            max-width: 80%;
+            cursor: pointer;
+        }
+        .seller-pfp-mini { width: 16px; height: 16px; border-radius: 50%; border: 2px solid var(--primary); object-fit: cover; }
+        .seller-name-mini { font-size: 0.55rem; color: #fff; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+        /* LIKE SYSTEM STYLE */
+        .like-container { display: flex; align-items: center; gap: 5px; margin-top: 8px; border-top: 1px solid #334155; padding-top: 8px; }
+        .btn-like { background: none; border: none; cursor: pointer; display: flex; align-items: center; gap: 4px; color: #94a3b8; font-size: 0.8rem; font-weight: bold; transition: 0.2s; }
+        .btn-like.liked { color: #f43f5e; }
+        .btn-like.liked svg { fill: #f43f5e; stroke: #f43f5e; }
+        .like-count { font-size: 0.8rem; }
+
         /* TOMBOL EDIT & HAPUS POSISI FLOATING DI KARTU */
         .btn-delete-post { position: absolute; top: 5px; right: 5px; background: var(--error); color: white; border: none; width: 25px; height: 25px; border-radius: 50%; cursor: pointer; font-weight: bold; font-size: 12px; z-index: 10; display: flex; align-items: center; justify-content: center; }
-        .btn-edit-item { position: absolute; top: 5px; left: 5px; background: var(--primary); color: #000; border: none; padding: 2px 8px; border-radius: 5px; cursor: pointer; font-weight: bold; font-size: 10px; z-index: 10; }
+        .btn-edit-item { position: absolute; top: 5px; left: 5px; background: var(--primary); color: #000; border: none; padding: 2px 8px; border-radius: 50px; cursor: pointer; font-weight: bold; font-size: 10px; z-index: 10; }
 
         .grup-item { background: var(--card-bg); padding: 15px; border-radius: 15px; margin-bottom: 12px; display: flex; align-items: center; gap: 15px; border: 1px solid #334155; position: relative; }
         .grup-img { width: 60px; height: 60px; border-radius: 12px; object-fit: cover; }
@@ -286,6 +309,92 @@
         
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 10px; }
+
+        /* --- STYLES BARU UNTUK FITUR USER --- */
+        .profile-header { text-align: center; margin-bottom: 25px; position: relative; }
+        .profile-img-big { width: 100px; height: 100px; border-radius: 50%; border: 3px solid var(--primary); object-fit: cover; cursor: pointer; }
+        .profile-stats { display: flex; justify-content: space-around; background: #0f172a; padding: 15px; border-radius: 15px; margin-top: 15px; }
+        .stat-item { flex: 1; text-align: center; cursor: pointer; }
+        .stat-num { display: block; font-weight: bold; color: var(--primary); font-size: 1.1rem; }
+        .stat-label { font-size: 0.7rem; color: #94a3b8; }
+        
+        .profile-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
+        .btn-profile { padding: 10px; border-radius: 10px; border: 1px solid #334155; background: var(--card-bg); color: white; font-size: 0.8rem; font-weight: 600; cursor: pointer; }
+        .btn-profile.full { grid-column: 1 / -1; background: var(--primary); color: #000; border: none; }
+        
+        .search-user-box { margin-bottom: 20px; }
+        .user-result-item { display: flex; align-items: center; gap: 12px; background: var(--card-bg); padding: 10px; border-radius: 12px; margin-bottom: 10px; border: 1px solid #334155; cursor: pointer; }
+        .user-result-img { width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--primary); }
+        .btn-follow { background: var(--primary); color: #000; border: none; padding: 5px 12px; border-radius: 6px; font-weight: bold; font-size: 0.75rem; margin-left: auto; }
+        .btn-follow.following { background: #334155; color: #fff; }
+        
+        .privacy-box { display: flex; align-items: center; justify-content: space-between; background: #0f172a; padding: 12px; border-radius: 10px; margin-top: 15px; font-size: 0.8rem; }
+        .toggle-switch { position: relative; display: inline-block; width: 40px; height: 20px; }
+        .toggle-switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #334155; transition: .4s; border-radius: 34px; }
+        .slider:before { position: absolute; content: ""; height: 14px; width: 14px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; }
+        input:checked + .slider { background-color: var(--primary); }
+        input:checked + .slider:before { transform: translateX(20px); }
+
+        .post-history-title { margin: 20px 0 10px; color: var(--primary); font-size: 0.9rem; font-weight: bold; border-bottom: 1px solid #334155; padding-bottom: 5px; }
+        
+        .my-post-container { display: flex; flex-direction: column; gap: 10px; }
+        .post-category-label { font-size: 0.7rem; background: #334155; padding: 3px 8px; border-radius: 4px; display: inline-block; margin-bottom: 5px; }
+        
+        /* CHAT SYSTEM STYLE */
+        .chat-list-item { background: var(--card-bg); padding: 15px; border-radius: 15px; margin-bottom: 10px; display: flex; align-items: center; gap: 12px; border: 1px solid #334155; cursor: pointer; transition: 0.3s; }
+        .chat-list-item:hover { border-color: var(--primary); transform: translateX(5px); }
+        .chat-user-img { width: 45px; height: 45px; border-radius: 50%; border: 2px solid var(--primary); object-fit: cover; }
+        
+        /* MODERN CHAT MODAL */
+        .chat-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-dark); z-index: 3000; display: none; flex-direction: column; animation: slideInLeft 0.4s ease; }
+        @keyframes slideInLeft { from { transform: translateX(100%); } to { transform: translateX(0); } }
+        
+        .chat-header { background: var(--card-bg); padding: 15px; border-bottom: 2px solid var(--primary); display: flex; align-items: center; gap: 15px; }
+        .btn-chat-back { background: none; border: none; color: var(--primary); font-size: 1.5rem; cursor: pointer; }
+        
+        .chat-messages { flex: 1; overflow-y: auto; padding: 15px; display: flex; flex-direction: column; gap: 12px; }
+        .msg-bubble { max-width: 75%; padding: 10px 15px; border-radius: 15px; font-size: 0.85rem; position: relative; word-wrap: break-word; }
+        .msg-left { align-self: flex-start; background: var(--card-bg); border: 1px solid #334155; border-bottom-left-radius: 2px; }
+        .msg-right { align-self: flex-end; background: var(--primary); color: #000; border-bottom-right-radius: 2px; font-weight: 600; }
+        .msg-img { width: 100%; border-radius: 10px; margin-top: 5px; border: 1px solid rgba(0,0,0,0.1); }
+        .msg-time { display: block; font-size: 0.6rem; opacity: 0.7; margin-top: 4px; text-align: right; }
+        .btn-del-msg { position: absolute; top: -5px; right: -5px; width: 18px; height: 18px; background: var(--error); color: white; border: none; border-radius: 50%; font-size: 10px; display: none; cursor: pointer; }
+        .msg-right:hover .btn-del-msg { display: block; }
+
+        .chat-input-area { background: var(--card-bg); padding: 15px; display: flex; gap: 10px; align-items: center; border-top: 1px solid #334155; }
+        .chat-input { flex: 1; padding: 12px; border-radius: 12px; background: #0f172a; border: 1px solid #334155; color: white; }
+        .btn-upload-chat { background: #334155; color: white; width: 40px; height: 40px; border-radius: 50%; border: none; cursor: pointer; font-size: 1.2rem; }
+        .btn-send-chat { background: var(--primary); color: black; width: 40px; height: 40px; border-radius: 50%; border: none; cursor: pointer; font-weight: bold; }
+
+        /* MODAL LIST USER */
+        .list-user-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 4000; padding: 20px; overflow-y: auto; }
+        .list-user-container { background: var(--card-bg); border: 2px solid var(--primary); border-radius: 20px; padding: 20px; max-width: 400px; margin: 40px auto; }
+        .list-user-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid #334155; padding-bottom: 10px; }
+        
+        .back-btn-profile { position: absolute; top: 0; left: 0; background: var(--error); color: white; padding: 5px 15px; border-radius: 10px; font-weight: bold; cursor: pointer; display: none; }
+        
+        /* FIX NAMA TENGAH DENGAN CENTANG */
+        .profile-name-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            margin-top: 10px;
+            width: 100%;
+        }
+        .profile-name-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        /* TOMBOL PENSIL EDIT */
+        .btn-edit-name-pencil { width: 14px; height: 14px; cursor: pointer; opacity: 0.7; }
+        .btn-edit-name-pencil:hover { opacity: 1; }
+
+        /* BLUE TICK STYLE */
+        .blue-tick { width: 18px; height: 18px; }
     </style>
 </head>
 <body>
@@ -311,6 +420,34 @@
 
 <div class="toast-container" id="toastContainer"></div>
 
+<div id="listUserModal" class="list-user-modal">
+    <div class="list-user-container">
+        <div class="list-user-header">
+            <h3 id="listUserTitle" style="color: var(--primary);">Daftar</h3>
+            <span style="color: white; cursor: pointer; font-weight: bold;" onclick="closeListUserModal()">X</span>
+        </div>
+        <div id="listUserContent"></div>
+    </div>
+</div>
+
+<div id="chatOverlay" class="chat-overlay">
+    <div class="chat-header">
+        <button class="btn-chat-back" onclick="closeChat()">❮</button>
+        <img id="chatTargetImg" src="" class="chat-user-img" style="width:35px; height:35px;">
+        <div>
+            <div id="chatTargetName" style="font-weight: bold; font-size: 0.9rem;">Nama</div>
+            <div id="chatTargetStatus" style="font-size: 0.65rem; color: var(--success);">Online</div>
+        </div>
+    </div>
+    <div class="chat-messages" id="chatMessageArea"></div>
+    <div class="chat-input-area">
+        <button class="btn-upload-chat" onclick="document.getElementById('chatFileInput').click()">+</button>
+        <input type="file" id="chatFileInput" accept="image/*" style="display:none" onchange="sendChatImage(this)">
+        <input type="text" id="chatInputField" class="chat-input" placeholder="Tulis pesan...">
+        <button class="btn-send-chat" onclick="sendChatText()">➤</button>
+    </div>
+</div>
+
 <nav>
     <div class="nav-left">
         <img src="as.png" class="nav-logo">
@@ -329,6 +466,14 @@
     <div class="nav-item" id="navHistory" onclick="switchTabNav('history')">
         <img src="history.png" alt="History">
         <span>History</span>
+    </div>
+    <div class="nav-item" id="navChat" onclick="switchTabNav('chat')">
+        <img src="chat.png" alt="Chat">
+        <span>Pesan</span>
+    </div>
+    <div class="nav-item" id="navUser" onclick="switchTabNav('user')">
+        <img src="user.png" alt="User">
+        <span>User</span>
     </div>
 </div>
 
@@ -419,9 +564,83 @@
     </div>
 
     <div id="sectionHistory" class="view-section">
-        <h2 style="color: var(--primary); margin-bottom: 20px;">Riwayat Pesanan Sukses</h2>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h2 style="color: var(--primary);">Riwayat Berhasil</h2>
+            <button onclick="clearAllHistory()" id="btnClearHistory" style="background: var(--error); color: white; border: none; padding: 5px 12px; border-radius: 8px; font-size: 0.7rem; font-weight: bold; display: none;">HAPUS SEMUA</button>
+        </div>
         <div id="historyDisplayArea">
-            <center><p style="color: #94a3b8; font-size: 0.8rem;">Silakan Login atau masukkan nomor WA di menu pesanan untuk melihat riwayat.</p></center>
+            <center><p style="color: #94a3b8; font-size: 0.8rem;">History tempat top up anda!!.</p></center>
+        </div>
+    </div>
+
+    <div id="sectionChat" class="view-section">
+        <h2 style="color: var(--primary); margin-bottom: 20px;">Pesan Masuk</h2>
+        <div id="chatDisplayArea">
+            <center><p style="color: #94a3b8; font-size: 0.8rem; margin-top:20px;">Belum ada percakapan aktif.</p></center>
+        </div>
+    </div>
+
+    <div id="sectionUser" class="view-section">
+        <div id="userProfileContent">
+            <div class="profile-header">
+                <button class="back-btn-profile" id="btnBackToMyProfile" onclick="loadMyUserProfile()">KEMBALI</button>
+                <img src="https://www.w3schools.com/howto/img_avatar.png" id="profileBigImg" class="profile-img-big" onclick="handleProfileImgClick()">
+                <input type="file" id="profileInputFile" accept="image/*" style="display:none" onchange="uploadProfilePhoto(this)">
+                
+                <div class="profile-name-container" id="profileNameContainer">
+                    <h2 class="profile-name-text" id="profileFullName">User Name</h2>
+                    </div>
+
+                <p id="profileUsername" style="color:var(--primary); font-size:0.85rem">@username</p>
+                
+                <div class="profile-stats">
+                    <div class="stat-item" id="boxStatFollowing" onclick="openListUser('following')">
+                        <span class="stat-num" id="statFollowing">0</span>
+                        <span class="stat-label">Mengikuti</span>
+                    </div>
+                    <div class="stat-item" id="boxStatFollowers" onclick="openListUser('followers')">
+                        <span class="stat-num" id="statFollowers">0</span>
+                        <span class="stat-label">Pengikut</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-num" id="statLikes">0</span>
+                        <span class="stat-label">Likes</span>
+                    </div>
+                </div>
+
+                <div class="profile-actions" id="myProfileActions">
+                    <button class="btn-profile" onclick="openEditProfile()">Edit Profil</button>
+                    <button class="btn-profile" onclick="logout()">Log Out</button>
+                </div>
+
+                <div class="profile-actions" id="otherProfileActions" style="display:none">
+                    <button class="btn-profile full" id="btnFollowOther" onclick="followUserFromProfile()">+ Ikuti</button>
+                    <button class="btn-profile" id="btnChatOther" onclick="chatFromProfile()">Kirim Pesan</button>
+                    <button class="btn-profile" id="btnWaOther" onclick="waFromProfile()">WhatsApp</button>
+                </div>
+
+                <div class="privacy-box" id="myPrivacyBox">
+                    <span>Private Pengikut & Mengikuti</span>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="privacyToggle" onchange="updatePrivacy(this.checked)">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="search-user-box" id="searchUserBox">
+                <p style="font-size: 0.8rem; color: #94a3b8; margin-bottom: 8px;">Cari Pengguna:</p>
+                <div class="search-bar">
+                    <input type="text" id="searchUserInput" placeholder="Cari Username..." oninput="searchOtherUsers()">
+                </div>
+                <div id="userSearchResults"></div>
+            </div>
+
+            <div class="post-history-title" id="postTitleJb">Postingan Akun</div>
+            <div id="myPostsJbArea" class="jb-grid"></div>
+
+            <div class="post-history-title" style="margin-top: 30px;" id="postTitleGrup">Grup</div>
+            <div id="myPostsGrupArea"></div>
         </div>
     </div>
 
@@ -473,6 +692,22 @@
     </div>
 
     <footer>© 2024 Ardhan Shop. Fast & Legal.</footer>
+</div>
+
+<div id="modalEditProfile" class="form-modal">
+    <div class="form-container">
+        <h2 style="color:var(--primary)">Edit Profil</h2><br>
+        <div style="margin-bottom:10px">
+            <label style="font-size:0.75rem; color:#94a3b8">Nama Lengkap:</label>
+            <input type="text" id="editFullname" placeholder="Nama Lengkap">
+        </div>
+        <div style="margin-bottom:15px">
+            <label style="font-size:0.75rem; color:#94a3b8">Username (@):</label>
+            <input type="text" id="editUsername" placeholder="Username">
+        </div>
+        <button class="btn-order" onclick="saveProfileChanges()">SIMPAN PERUBAHAN</button>
+        <p style="text-align:center; color:var(--error); margin-top:15px; cursor:pointer;" onclick="closeModals()">Batal</p>
+    </div>
 </div>
 
 <div id="authModal" class="form-modal">
@@ -584,13 +819,16 @@
     const db = firebase.firestore();
     const auth = firebase.auth();
 
-    // VARIABEL ADMIN (GANTI DENGAN EMAIL ADMIN KAMU)
     const adminEmail = "nairadafania01@gmail.com";
-    let activeJbSubTab = "public"; // public atau admin
-    let activeGrupSubTab = "public"; // public atau admin
+    let activeJbSubTab = "public";
+    let activeGrupSubTab = "public";
     let isRegisterMode = false;
+    let activeChatRoom = null;
+    let chatUnsubscribe = null;
+    let viewingOtherUid = null;
+    let profileUnsubscribe = null;
+    let historyUnsubscribe = null;
 
-    // SINKRONISASI BANNER & QRIS DARI ADMIN
     db.collection("settings").onSnapshot(snap => {
         snap.forEach(doc => {
             const data = doc.data();
@@ -612,7 +850,6 @@
         }
     }
 
-    // --- LOGIKA SUB TAB (PUBLIK VS ADMIN) ---
     function switchSubTab(type, target) {
         if(type === 'jb') {
             activeJbSubTab = target;
@@ -629,7 +866,6 @@
         }
     }
 
-    // --- AUTH LOGIC (MANUAL & GOOGLE) ---
     function toggleAuthMode() {
         isRegisterMode = !isRegisterMode;
         document.getElementById('authTitle').innerText = isRegisterMode ? "Daftar Akun Baru" : "Login Ke Ardhan Shop";
@@ -656,10 +892,19 @@
 
                 const userCredential = await auth.createUserWithEmailAndPassword(email, pass);
                 await userCredential.user.updateProfile({ displayName: name });
+                
+                const username = name.replace(/\s+/g, '').toLowerCase() + Math.floor(Math.random() * 100);
                 await db.collection("users").doc(userCredential.user.uid).set({
                     nama: name,
+                    username: username,
                     whatsapp: wa,
                     email: email,
+                    uid: userCredential.user.uid,
+                    photo: 'https://www.w3schools.com/howto/img_avatar.png',
+                    privacy: false,
+                    followersCount: 0,
+                    followingCount: 0,
+                    likesCount: 0,
                     createdAt: new Date().toLocaleString()
                 });
                 ardhanToast("Pendaftaran Berhasil!");
@@ -676,8 +921,26 @@
     function loginGoogle() {
         const provider = new firebase.auth.GoogleAuthProvider();
         auth.signInWithPopup(provider)
-            .then((result) => {
-                ardhanToast("Selamat Datang, " + result.user.displayName);
+            .then(async (result) => {
+                const user = result.user;
+                const userDoc = await db.collection("users").doc(user.uid).get();
+                if(!userDoc.exists) {
+                    const username = user.displayName.replace(/\s+/g, '').toLowerCase() + Math.floor(Math.random() * 100);
+                    await db.collection("users").doc(user.uid).set({
+                        nama: user.displayName,
+                        username: username,
+                        whatsapp: "",
+                        email: user.email,
+                        uid: user.uid,
+                        photo: user.photoURL || 'https://www.w3schools.com/howto/img_avatar.png',
+                        privacy: false,
+                        followersCount: 0,
+                        followingCount: 0,
+                        likesCount: 0,
+                        createdAt: new Date().toLocaleString()
+                    });
+                }
+                ardhanToast("Selamat Datang, " + user.displayName);
                 closeModals();
             })
             .catch(err => {
@@ -688,50 +951,215 @@
     function logout() {
         auth.signOut().then(() => {
             ardhanToast("Berhasil Keluar");
-            document.getElementById('historyDisplayArea').innerHTML = '<center><p style="color: #94a3b8; font-size: 0.8rem;">Silakan Login atau masukkan nomor WA di menu pesanan untuk melihat riwayat.</p></center>';
+            if(historyUnsubscribe) historyUnsubscribe();
+            document.getElementById('historyDisplayArea').innerHTML = '<center><p style="color: #94a3b8; font-size: 0.8rem;">History tempat top up anda!!.</p></center>';
+            switchTabNav('home');
         });
     }
 
     auth.onAuthStateChanged(user => {
         const area = document.getElementById('authArea');
         if(user) {
-            const photo = user.photoURL || 'https://www.w3schools.com/howto/img_avatar.png';
-            area.innerHTML = `
-                <div class="user-profile">
-                    <img src="${photo}" class="user-img">
-                    <div style="display: flex; flex-direction: column; align-items: flex-start;">
-                        <span style="font-size:0.7rem; font-weight:bold;">${user.displayName}</span>
-                        <button class="btn-logout" onclick="logout()">Log Out</button>
-                    </div>
-                </div>
-            `;
+            loadMyUserProfile();
             if (currentView !== 'topup') {
                 document.getElementById('fabAdd').style.display = 'flex';
             }
             loadHistoryByEmail(user.email);
             filterJB();
             filterGrup();
+            loadChatList();
         } else {
             area.innerHTML = `<button onclick="openAuthModal()" class="btn-login">Login / Daftar</button>`;
             document.getElementById('fabAdd').style.display = 'none';
         }
     });
 
-    function checkAuthAndOpenModal() {
-        if (!auth.currentUser) {
-            ardhanAlert("Akses Ditolak", "Silakan Login terlebih dahulu untuk Jual Akun atau Buat Grup!");
-            return;
-        }
-        document.getElementById('editJbId').value = "";
-        document.getElementById('jbModalTitle').innerText = "Jual Akun Game";
-        document.getElementById('btnSaveJB').innerText = "POSTING SEKARANG";
-        document.getElementById('editGrupId').value = "";
-        document.getElementById('grupModalTitle').innerText = "Promosikan Grup";
-        document.getElementById('btnSaveGrup').innerText = "DAFTARKAN GRUP";
-        openAddModal();
+    function loadMyUserProfile() {
+        if(profileUnsubscribe) profileUnsubscribe();
+        const user = auth.currentUser;
+        if(!user) return;
+        
+        viewingOtherUid = null;
+        document.getElementById('btnBackToMyProfile').style.display = 'none';
+        document.getElementById('myProfileActions').style.display = 'grid';
+        document.getElementById('otherProfileActions').style.display = 'none';
+        document.getElementById('myPrivacyBox').style.display = 'flex';
+        document.getElementById('searchUserBox').style.display = 'block';
+        document.getElementById('postTitleJb').innerText = "Postingan Akun Saya";
+        document.getElementById('postTitleGrup').innerText = "Grup Saya";
+
+        profileUnsubscribe = db.collection("users").doc(user.uid).onSnapshot(doc => {
+            if(doc.exists) {
+                const userData = doc.data();
+                updateProfileUI(userData, true);
+                loadPostsByUser(userData.email);
+            }
+        });
+
+        // Tampilan navigasi atas
+        db.collection("users").doc(user.uid).get().then(doc => {
+            const userData = doc.data();
+            document.getElementById('authArea').innerHTML = `
+                <div class="user-profile">
+                    <img src="${userData.photo}" class="user-img">
+                    <div style="display: flex; flex-direction: column; align-items: flex-start;">
+                        <span style="font-size:0.7rem; font-weight:bold;">${userData.nama}</span>
+                        <button class="btn-logout" onclick="logout()">Log Out</button>
+                    </div>
+                </div>
+            `;
+        });
     }
 
-    // --- HISTORY LOGIC ---
+    // --- LOGIC BLUE TICK SINKRON (FIXED LAYOUT) ---
+    async function updateProfileUI(userData, isMe) {
+        const container = document.getElementById('profileNameContainer');
+        
+        // Cek Centang Biru di Koleksi verified_users
+        const vDoc = await db.collection("verified_users").doc(userData.nama).get();
+        const tickHtml = vDoc.exists ? '<img src="centang.png" class="blue-tick">' : '';
+        const pencilHtml = isMe ? '<img src="pensil.png" class="btn-edit-name-pencil" onclick="openEditProfile()">' : '';
+
+        // Render Ulang dengan Struktur Flex agar Tetap di Tengah
+        container.innerHTML = `
+            <h2 class="profile-name-text" id="profileFullName">${userData.nama}</h2>
+            ${tickHtml}
+            ${pencilHtml}
+        `;
+        
+        document.getElementById('profileBigImg').src = userData.photo || 'https://www.w3schools.com/howto/img_avatar.png';
+        document.getElementById('profileUsername').innerText = "@" + userData.username;
+        document.getElementById('statFollowing').innerText = userData.followingCount || 0;
+        document.getElementById('statFollowers').innerText = userData.followersCount || 0;
+        document.getElementById('statLikes').innerText = userData.likesCount || 0;
+        
+        if(isMe) {
+            document.getElementById('privacyToggle').checked = userData.privacy || false;
+        } else {
+            checkFollowStatus(userData.uid);
+            window.targetWA = userData.whatsapp;
+            window.targetName = userData.nama;
+            window.targetPhoto = userData.photo;
+            window.targetUid = userData.uid; 
+        }
+    }
+
+    async function checkFollowStatus(targetUid) {
+        const myUid = auth.currentUser.uid;
+        const followDoc = await db.collection("users").doc(myUid).collection("following").doc(targetUid).get();
+        const btn = document.getElementById('btnFollowOther');
+        if(followDoc.exists) {
+            btn.innerText = "Batal Ikuti";
+            btn.classList.add('following');
+        } else {
+            btn.innerText = "+ Ikuti";
+            btn.classList.remove('following');
+        }
+    }
+
+    // --- FITUR LIHAT PROFIL ORANG LAIN ---
+
+    async function viewOtherProfile(uid) {
+        if(!auth.currentUser) return openAuthModal();
+        if(uid === auth.currentUser.uid) return loadMyUserProfile();
+
+        if(profileUnsubscribe) profileUnsubscribe();
+        viewingOtherUid = uid;
+
+        document.getElementById('btnBackToMyProfile').style.display = 'block';
+        document.getElementById('myProfileActions').style.display = 'none';
+        document.getElementById('otherProfileActions').style.display = 'grid';
+        document.getElementById('myPrivacyBox').style.display = 'none';
+        document.getElementById('searchUserBox').style.display = 'none';
+        
+        const doc = await db.collection("users").doc(uid).get();
+        if(doc.exists) {
+            const userData = doc.data();
+            document.getElementById('postTitleJb').innerText = "Postingan Akun " + userData.nama;
+            document.getElementById('postTitleGrup').innerText = "Grup " + userData.nama;
+            updateProfileUI(userData, false);
+            loadPostsByUser(userData.email);
+            switchTabNav('user');
+        }
+    }
+
+    function handleProfileImgClick() {
+        if(!viewingOtherUid) {
+            document.getElementById('profileInputFile').click();
+        }
+    }
+
+    function followUserFromProfile() {
+        if(viewingOtherUid) {
+            followUser(viewingOtherUid, document.getElementById('btnFollowOther'));
+        }
+    }
+
+    function chatFromProfile() {
+        if(viewingOtherUid) {
+            openChat(viewingOtherUid, window.targetName, window.targetPhoto);
+        }
+    }
+
+    function waFromProfile() {
+        if(window.targetWA) {
+            window.open(`https://wa.me/${window.targetWA}`);
+        } else {
+            ardhanAlert("Info", "User ini belum mencantumkan nomor WhatsApp.");
+        }
+    }
+
+    // --- MODAL LIST USER (FOLLOWERS/FOLLOWING) ---
+
+    async function openListUser(type) {
+        const uid = viewingOtherUid || auth.currentUser.uid;
+        const userDoc = await db.collection("users").doc(uid).get();
+        const userData = userDoc.data();
+
+        // Cek privasi
+        if(uid !== auth.currentUser.uid && userData.privacy) {
+            return ardhanAlert("Privasi", "Pengguna ini menyembunyikan daftar pengikut dan yang diikuti.");
+        }
+
+        const title = type === 'followers' ? 'Pengikut' : 'Mengikuti';
+        document.getElementById('listUserTitle').innerText = title;
+        document.getElementById('listUserModal').style.display = 'block';
+        const content = document.getElementById('listUserContent');
+        content.innerHTML = "<center style='color:white'>Memuat...</center>";
+
+        const snap = await db.collection("users").doc(uid).collection(type).get();
+        if(snap.empty) {
+            content.innerHTML = `<center style='color:#94a3b8; padding:20px;'>Belum ada ${title}.</center>`;
+            return;
+        }
+
+        content.innerHTML = "";
+        for(let d of snap.docs) {
+            const uDoc = await db.collection("users").doc(d.id).get();
+            if(uDoc.exists) {
+                const u = uDoc.data();
+                // Cek centang biru di list modal
+                const vDocModal = await db.collection("verified_users").doc(u.nama).get();
+                const tickHtmlModal = vDocModal.exists ? ' <img src="centang.png" class="blue-tick" style="width:14px; height:14px;">' : '';
+
+                content.innerHTML += `
+                    <div class="user-result-item" onclick="closeListUserModal(); viewOtherProfile('${u.uid}')">
+                        <img src="${u.photo}" class="user-result-img">
+                        <div>
+                            <div style="font-weight:bold; font-size:0.8rem; color:white">${u.nama}${tickHtmlModal}</div>
+                            <div style="font-size:0.7rem; color:var(--primary)">@${u.username}</div>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+    }
+
+    function closeListUserModal() {
+        document.getElementById('listUserModal').style.display = 'none';
+    }
+
+    // --- SEPARATE TAB NAVIGATION ---
     function switchTabNav(tab) {
         document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
         document.querySelectorAll('.view-section').forEach(s => s.classList.remove('active'));
@@ -740,89 +1168,278 @@
         if(tab === 'home') {
             document.getElementById('navHome').classList.add('active');
             document.getElementById('sectionHome').classList.add('active');
+            document.getElementById('sectionHistory').classList.remove('active');
+            document.getElementById('sectionChat').classList.remove('active');
+            document.getElementById('sectionUser').classList.remove('active');
             document.getElementById('homeMainContent').style.display = 'block';
             document.getElementById('sectionTopup').classList.add('active');
             document.querySelectorAll('.nav-tab-btn').forEach(b => b.classList.remove('active'));
             document.getElementById('btnTopupTab').classList.add('active');
             currentView = 'topup';
-        } else {
+        } else if(tab === 'history') {
             document.getElementById('navHistory').classList.add('active');
             document.getElementById('sectionHistory').classList.add('active');
+            document.getElementById('sectionHome').classList.remove('active');
+            document.getElementById('sectionChat').classList.remove('active');
+            document.getElementById('sectionUser').classList.remove('active');
+            currentView = 'history';
+        } else if(tab === 'chat') {
+            if(!auth.currentUser) {
+                ardhanAlert("Oops", "Login dulu untuk melihat pesan!");
+                switchTabNav('home');
+                openAuthModal();
+                return;
+            }
+            document.getElementById('navChat').classList.add('active');
+            document.getElementById('sectionChat').classList.add('active');
+            document.getElementById('sectionHome').classList.remove('active');
+            document.getElementById('sectionHistory').classList.remove('active');
+            document.getElementById('sectionUser').classList.remove('active');
+            currentView = 'chat';
+            loadChatList();
+        } else if(tab === 'user') {
+            if(!auth.currentUser) {
+                ardhanAlert("Oops", "Silakan Login terlebih dahulu untuk melihat profil!");
+                document.getElementById('navHome').classList.add('active');
+                document.getElementById('sectionHome').classList.add('active');
+                openAuthModal();
+                return;
+            }
+            document.getElementById('navUser').classList.add('active');
+            document.getElementById('sectionUser').classList.add('active');
+            document.getElementById('sectionHome').classList.remove('active');
+            document.getElementById('sectionHistory').classList.remove('active');
+            document.getElementById('sectionChat').classList.remove('active');
+            currentView = 'user';
         }
     }
 
-    function loadHistoryByEmail(email) {
-        db.collection("success_orders").where("email", "==", email).orderBy("confirm_at", "desc").onSnapshot(snap => {
-            renderHistoryUI(snap);
+    function openEditProfile() {
+        const user = auth.currentUser;
+        if(!user) return;
+        db.collection("users").doc(user.uid).get().then(doc => {
+            const d = doc.data();
+            document.getElementById('editFullname').value = d.nama;
+            document.getElementById('editUsername').value = d.username;
+            document.getElementById('modalEditProfile').style.display = 'block';
         });
     }
 
-    function loadHistoryByWA() {
-        const wa = document.getElementById('userWA').value;
-        if(wa.length > 5) {
-            db.collection("success_orders").where("whatsapp", "==", wa).orderBy("confirm_at", "desc").onSnapshot(snap => {
-                renderHistoryUI(snap);
+    // --- SAVE PROFILE CHANGES ---
+    async function saveProfileChanges() {
+        const name = document.getElementById('editFullname').value;
+        const username = document.getElementById('editUsername').value.toLowerCase().replace(/\s+/g, '');
+        if(!name || !username) return ardhanAlert("Oops", "Harap isi semua formulir!");
+
+        try {
+            await db.collection("users").doc(auth.currentUser.uid).update({
+                nama: name,
+                username: username
             });
+            ardhanToast("Profil diperbarui!");
+            closeModals();
+            loadMyUserProfile(); 
+        } catch (e) {
+            ardhanAlert("Gagal", "Gagal memperbarui profil.");
         }
     }
 
-    function renderHistoryUI(snap) {
-        const area = document.getElementById('historyDisplayArea');
-        if(snap.empty) {
-            area.innerHTML = '<center><p style="color: #94a3b8; font-size: 0.8rem; margin-top:20px;">Belum ada riwayat transaksi sukses.</p></center>';
-            return;
-        }
-        area.innerHTML = `<p style="font-size: 0.7rem; color: #94a3b8; margin-bottom: 10px;">Total transaksi: ${snap.size} kali</p>`;
-        snap.forEach(doc => {
-            const d = doc.data();
-            area.innerHTML += `
-                <div class="history-card">
-                    <div class="history-header">
-                        <span style="font-size: 0.8rem; font-weight: bold; color: var(--primary);">${d.game}</span>
-                        <span class="status-success">SUKSES</span>
+    function uploadProfilePhoto(input) {
+        const file = input.files[0];
+        if(!file) return;
+        const reader = new FileReader();
+        reader.onload = async (e) => {
+            const base64 = e.target.result;
+            await db.collection("users").doc(auth.currentUser.uid).update({ photo: base64 });
+            ardhanToast("Foto profil diubah!");
+        };
+        reader.readAsDataURL(file);
+    }
+
+    async function updatePrivacy(isPrivate) {
+        await db.collection("users").doc(auth.currentUser.uid).update({ privacy: isPrivate });
+        ardhanToast("Privasi diperbarui!");
+    }
+
+    async function searchOtherUsers() {
+        const search = document.getElementById('searchUserInput').value.toLowerCase();
+        const results = document.getElementById('userSearchResults');
+        if(search.length < 2) { results.innerHTML = ""; return; }
+
+        const snap = await db.collection("users")
+            .where("username", ">=", search)
+            .where("username", "<=", search + "\uf8ff")
+            .limit(5).get();
+
+        results.innerHTML = "";
+        
+        const myUid = auth.currentUser.uid;
+        const myFollowingsSnap = await db.collection("users").doc(myUid).collection("following").get();
+        const followingIds = myFollowingsSnap.docs.map(doc => doc.id);
+
+        for(let doc of snap.docs) {
+            const u = doc.data();
+            const uid = doc.id;
+            if(uid === myUid) continue;
+            
+            const isFollowing = followingIds.includes(uid);
+            const vDocSearch = await db.collection("verified_users").doc(u.nama).get();
+            const tickHtmlSearch = vDocSearch.exists ? ' <img src="centang.png" class="blue-tick" style="width:14px; height:14px;">' : '';
+
+            results.innerHTML += `
+                <div class="user-result-item" onclick="viewOtherProfile('${uid}')">
+                    <img src="${u.photo}" class="user-result-img">
+                    <div>
+                        <div style="font-weight:bold; font-size:0.8rem">${u.nama}${tickHtmlSearch}</div>
+                        <div style="font-size:0.7rem; color:var(--primary)">@${u.username}</div>
                     </div>
-                    <div style="font-size: 0.75rem; color: white;">
-                        <p>Produk: <b>${d.paket}</b></p>
-                        <p>Player ID: ${d.player_id}</p>
-                        <p>Harga: Rp ${parseInt(d.harga).toLocaleString()}</p>
-                        <p style="font-size: 0.65rem; color: #94a3b8; margin-top: 5px;">Selesai pada: ${d.confirm_at}</p>
-                    </div>
+                    <button class="btn-follow ${isFollowing ? 'following' : ''}" onclick="event.stopPropagation(); followUser('${uid}', this)">
+                        ${isFollowing ? 'Batal Ikuti' : '+ Ikuti'}
+                    </button>
                 </div>
             `;
-        });
+        }
     }
 
-    db.collection("success_orders").onSnapshot(snap => {
-        snap.docChanges().forEach(change => {
-            if (change.type === "added") {
-                const d = change.doc.data();
-                const inputWA = document.getElementById('userWA').value;
-                if(d.whatsapp === inputWA || (auth.currentUser && d.email === auth.currentUser.email)) {
-                    showSuccessPopup(d);
+    async function followUser(targetUid, btn) {
+        if(!auth.currentUser) return openAuthModal();
+        const myUid = auth.currentUser.uid;
+        const targetRef = db.collection("users").doc(targetUid);
+        const myRef = db.collection("users").doc(myUid);
+        const followLogRef = myRef.collection("following").doc(targetUid);
+
+        try {
+            const followDoc = await followLogRef.get();
+            
+            await db.runTransaction(async (transaction) => {
+                const tSnap = await transaction.get(targetRef);
+                const mSnap = await transaction.get(myRef);
+                
+                if(!followDoc.exists) {
+                    transaction.set(followLogRef, { time: new Date() });
+                    transaction.set(targetRef.collection("followers").doc(myUid), { time: new Date() });
+                    transaction.update(targetRef, { followersCount: (tSnap.data().followersCount || 0) + 1 });
+                    transaction.update(myRef, { followingCount: (mSnap.data().followingCount || 0) + 1 });
+                    btn.innerText = "Batal Ikuti";
+                    btn.classList.add('following');
+                    ardhanToast("Berhasil diikuti!");
+                } else {
+                    transaction.delete(followLogRef);
+                    transaction.delete(targetRef.collection("followers").doc(myUid));
+                    transaction.update(targetRef, { followersCount: Math.max(0, (tSnap.data().followersCount || 0) - 1) });
+                    transaction.update(myRef, { followingCount: Math.max(0, (mSnap.data().followingCount || 0) - 1) });
+                    btn.innerText = "+ Ikuti";
+                    btn.classList.remove('following');
+                    ardhanToast("Berhenti mengikuti.");
                 }
-            }
-        });
-    });
-
-    function showSuccessPopup(data) {
-        const title = `BERHASIL TOP UP ${data.game.toUpperCase()}`;
-        const msg = `
-            <div style="text-align:left; font-size:0.85rem; background:#0f172a; padding:15px; border-radius:10px; color:white; border:1px solid var(--primary)">
-                <p><b>Status:</b> <span style="color:var(--success)">SUKSES</span></p>
-                <p><b>Waktu:</b> ${data.confirm_at || data.waktu}</p>
-                <p><b>Player ID:</b> ${data.player_id}</p>
-                <p><b>Produk:</b> ${data.paket}</p>
-                <p><b>Metode:</b> QRIS All Payment</p>
-                <p><b>Harga:</b> Rp ${parseInt(data.harga).toLocaleString()}</p>
-                <p><b>Nama Pengirim:</b> ${data.nama_pengirim || '-'}</p>
-                <hr style="margin:10px 0; border:0.5px solid #334155">
-                <center><small>Pesanan Anda telah diproses. Terima kasih!</small></center>
-            </div>
-        `;
-        ardhanAlert(title, msg);
+            });
+        } catch (e) {
+            ardhanAlert("Eror", "Gagal memperbarui status pengikut.");
+        }
     }
 
-    // --- DATABASE LENGKAP ---
+    async function loadPostsByUser(email) {
+        const jbArea = document.getElementById('myPostsJbArea');
+        const grupArea = document.getElementById('myPostsGrupArea');
+        
+        jbArea.innerHTML = "";
+        grupArea.innerHTML = "";
+
+        const jbSnap = await db.collection("jb_accounts").where("seller_email", "==", email).get();
+        const grupSnap = await db.collection("groups").where("owner_email", "==", email).get();
+
+        if(jbSnap.empty) { jbArea.innerHTML = `<p style="grid-column: 1/-1; text-align:center; color:#94a3b8; font-size:0.75rem; padding:10px;">Tidak ada postingan JB.</p>`; }
+        if(grupSnap.empty) { grupArea.innerHTML = `<p style="text-align:center; color:#94a3b8; font-size:0.75rem; padding:10px;">Tidak ada postingan Grup.</p>`; }
+
+        jbSnap.forEach(doc => {
+            const d = doc.data();
+            const id = doc.id;
+            const isMe = auth.currentUser && auth.currentUser.email === d.seller_email;
+            jbArea.innerHTML += `
+                <div class="jb-card">
+                    ${isMe ? `<button class="btn-delete-post" onclick="deleteJB('${id}')">X</button>` : ""}
+                    <img src="${d.img}" class="main-img">
+                    <div class="jb-info">
+                        <div class="jb-game">${d.game}</div>
+                        <div class="jb-price">Rp ${d.price.toLocaleString()}</div>
+                        <div class="like-container">
+                            <button class="btn-like" onclick="toggleLike('${id}', 'jb_accounts', '${d.seller_uid}')">
+                                <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l8.72-8.72 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+                                <span class="like-count">${d.likes || 0}</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>`;
+        });
+
+        grupSnap.forEach(doc => {
+            const d = doc.data();
+            const id = doc.id;
+            const isMe = auth.currentUser && auth.currentUser.email === d.owner_email;
+            grupArea.innerHTML += `
+                <div class="grup-item">
+                    <img src="${d.img}" class="grup-img">
+                    <div style="flex:1">
+                        <b>${d.name}</b><br>
+                        <div class="like-container" style="border:none; padding:0; margin-top:5px">
+                            <button class="btn-like" onclick="toggleLike('${id}', 'groups', '${d.owner_uid}')">
+                                <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l8.72-8.72 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+                                <span class="like-count">${d.likes || 0}</span>
+                            </button>
+                        </div>
+                    </div>
+                    ${isMe ? `<button class="btn-delete-grup-post" onclick="deleteGrup('${id}')">Hapus</button>` : `<a href="${d.link}" target="_blank" class="btn-join">GABUNG</a>`}
+                </div>`;
+        });
+    }
+
+    // --- LIKE SYSTEM ---
+
+    async function toggleLike(postId, collection, ownerUid) {
+        if(!auth.currentUser) return ardhanAlert("Oops", "Login dulu untuk memberikan Like!");
+        
+        const userUid = auth.currentUser.uid;
+        const postRef = db.collection(collection).doc(postId);
+        const ownerRef = db.collection("users").doc(ownerUid);
+        const likeId = `${userUid}_${postId}`;
+        const likeRef = db.collection("likes_log").doc(likeId);
+
+        try {
+            const likeDoc = await likeRef.get();
+            
+            await db.runTransaction(async (transaction) => {
+                const postSnapshot = await transaction.get(postRef);
+                const ownerSnapshot = await transaction.get(ownerRef);
+                
+                if (!postSnapshot.exists) return;
+
+                if (!likeDoc.exists) {
+                    transaction.set(likeRef, { user: userUid, post: postId, time: new Date() });
+                    transaction.update(postRef, { likes: (postSnapshot.data().likes || 0) + 1 });
+                    if(ownerSnapshot.exists) {
+                        transaction.update(ownerRef, { likesCount: (ownerSnapshot.data().likesCount || 0) + 1 });
+                    }
+                } else {
+                    transaction.delete(likeRef);
+                    transaction.update(postRef, { likes: Math.max(0, (postSnapshot.data().likes || 0) - 1) });
+                    if(ownerSnapshot.exists) {
+                        transaction.update(ownerRef, { likesCount: Math.max(0, (ownerSnapshot.data().likesCount || 0) - 1) });
+                    }
+                }
+            });
+
+            if(collection === 'jb_accounts') filterJB(); else filterGrup();
+            if(currentView === 'user') {
+                const activeEmail = viewingOtherUid ? (await db.collection("users").doc(viewingOtherUid).get()).data().email : auth.currentUser.email;
+                loadPostsByUser(activeEmail);
+            }
+            
+        } catch (e) {
+            console.error("Like Error: ", e);
+        }
+    }
+
+    // --- DATA GAME & PRICING ---
     const dataML = [
         {n: "3 DM (2+1 Bonus)", p: 1500, i: "dmml.png"}, {n: "5 DM (5+0 Bonus)", p: 2000, i: "dmml.png"},
         {n: "12 DM (11+1 Bonus)", p: 3500, i: "dmml.png"}, {n: "19 DM (17+2 Bonus)", p: 5500, i: "dmml.png"},
@@ -870,12 +1487,12 @@
         ],
         "Genshin Impact": [
             {n: "60 Crystals", p: 12241, i: "cl.png"}, 
-            {n: "60 Chronal Nexus", p: 14619, i: "cl.png"},
+            {n: "60 Chronal Nexus", p: 14619, i: "cn.png"},
             {n: "300 + 30 Crystals", p: 57466, i: "cl.png"},
-            {n: "300 + 30 Chronal Nexus", p: 70348, i: "cl.png"},
+            {n: "300 + 30 Chronal Nexus", p: 70348, i: "cn.png"},
             {n: "980 + 110 Crystals", p: 175543, i: "cl.png"},
-            {n: "980 + 110 Chronal Nexus", p: 206487, i: "cl.png"},
-            {n: "3280 + 600 Chronal Nexus", p: 695241, i: "cl.png"}
+            {n: "980 + 110 Chronal Nexus", p: 206487, i: "cn.png"},
+            {n: "3280 + 600 Chronal Nexus", p: 695241, i: "cn.png"}
         ],
         "Honor of Kings": [
             {n: "17 Tokens", p: 4500, i: "tkn.png"}, {n: "88 Tokens", p: 19000, i: "tkn.png"}, 
@@ -884,7 +1501,7 @@
         "COD Mobile": [
             {n: "31 CP", p: 5000, i: "cp.png"}, {n: "63 CP", p: 10000, i: "cp.png"}, 
             {n: "128 CP", p: 20000, i: "cp.png"}, {n: "320 CP", p: 50000, i: "cp.png"},
-            {n: "645 CP", p: 100000, i: "cl.png"}, {n: "1373 CP", p: 200000, i: "cp.png"}
+            {n: "645 CP", p: 100000, i: "cp.png"}, {n: "1373 CP", p: 200000, i: "cp.png"}
         ]
     };
     
@@ -909,7 +1526,7 @@
         {n: "Ultimate Node 16GB", p: 75000, cpu: "Unlimited", ram: "16 GB", disk: "50 GB"}
     ];
 
-    // --- INFINITE & DRAGGABLE SLIDER LOGIC ---
+    // --- BANNER SLIDER LOGIC ---
     const bannerWrapper = document.getElementById('bannerWrapper');
     const dotContainer = document.getElementById('dotContainer');
     const images = ['baner1.png', 'baner2.png'];
@@ -989,7 +1606,7 @@
     let slideTimer = setInterval(nextSlide, 5000);
     initSlider();
 
-    // --- MAIN APP LOGIC ---
+    // --- UTILS ---
     function ardhanAlert(title, msg) {
         document.getElementById('ardhanAlertTitle').innerText = title;
         document.getElementById('ardhanAlertMsg').innerHTML = msg;
@@ -1004,7 +1621,6 @@
         setTimeout(() => { toast.style.opacity = '0'; setTimeout(() => toast.remove(), 400); }, 3000);
     }
 
-    // --- MODERN CONFIRM SYSTEM ---
     let confirmCallback = null;
     function ardhanConfirm(msg, callback) {
         document.getElementById('ardhanConfirmMsg').innerText = msg;
@@ -1065,9 +1681,27 @@
         document.getElementById('headerGameIcon').src = icon;
         document.getElementById('fabAdd').style.display = 'none';
         const area = document.getElementById('dynamicInputArea');
-        if(game === 'Mobile Legends') area.innerHTML = `<div class="input-ml"><input type="number" id="id1" placeholder="User ID"><input type="number" id="id2" placeholder="Zone"></div>`;
-        else if(game === 'Minecraft Hosting') area.innerHTML = `<input type="text" id="id1" placeholder="Isi Gmail">`;
-        else area.innerHTML = `<input type="text" id="id1" placeholder="Masukkan Player ID">`;
+
+        // PERUBAHAN PLACEHOLDER DAN JENIS INPUT SESUAI PERINTAH
+        if(game === 'Mobile Legends') {
+            area.innerHTML = `<div class="input-ml"><input type="number" id="id1" placeholder="Masukkan User ID"><input type="number" id="id2" placeholder="Zone ID"></div>`;
+        } else if(game === 'Roblox') {
+            area.innerHTML = `<input type="text" id="id1" placeholder="Masukkan Username Roblox">`;
+        } else if(game === 'Free Fire') {
+            area.innerHTML = `<input type="number" id="id1" placeholder="Masukkan Player ID Free Fire">`;
+        } else if(game === 'PUBG Mobile') {
+            area.innerHTML = `<input type="number" id="id1" placeholder="Masukkan Character ID PUBG">`;
+        } else if(game === 'Genshin Impact') {
+            area.innerHTML = `<div class="input-ml"><input type="number" id="id1" placeholder="Masukkan UID"><input type="text" id="id2" placeholder="Pilih Server (Asia/America/Dll)"></div>`;
+        } else if(game === 'Honor of Kings') {
+            area.innerHTML = `<input type="number" id="id1" placeholder="Masukkan Player ID HOK">`;
+        } else if(game === 'COD Mobile') {
+            area.innerHTML = `<input type="number" id="id1" placeholder="Masukkan OpenID CODM">`;
+        } else if(game === 'Minecraft Hosting') {
+            area.innerHTML = `<input type="email" id="id1" placeholder="Masukkan Alamat Gmail Aktif">`;
+        } else {
+            area.innerHTML = `<input type="text" id="id1" placeholder="Masukkan Player ID / Username">`;
+        }
         
         const hasMember = ['Mobile Legends', 'Free Fire', 'Honor of Kings', 'Genshin Impact'].includes(game);
         document.getElementById('tabWrapper').style.display = hasMember ? 'flex' : 'none';
@@ -1136,243 +1770,179 @@
             if(doc.exists) {
                 const p = doc.data();
                 const now = new Date().toISOString().split('T')[0];
-
-                if(p.targetGame && p.targetGame !== 'all' && p.targetGame !== curG) {
-                    return ardhanAlert("Gagal", `Kode promo ini hanya berlaku khusus untuk game ${p.targetGame}`);
-                }
-
-                if(p.expired && p.expired < now) return ardhanAlert("Gagal", "Kode promo sudah kadaluarsa!");
-                if(p.limit && p.usedCount >= p.limit) return ardhanAlert("Gagal", "Limit kuota promo sudah habis!");
-
-                let discAmount = 0;
-                if(p.discType === 'rp') {
-                    discAmount = p.discValue;
-                } else {
-                    discAmount = (baseP * p.discValue) / 100;
-                }
-
-                curP = baseP - discAmount;
-                if(curP < 0) curP = 0;
-
+                if(p.targetGame && p.targetGame !== 'all' && p.targetGame !== curG) return ardhanAlert("Gagal", `Promo khusus game ${p.targetGame}`);
+                if(p.expired && p.expired < now) return ardhanAlert("Gagal", "Promo kadaluarsa!");
+                
+                let discAmount = (p.discType === 'rp') ? p.discValue : (baseP * p.discValue) / 100;
+                curP = Math.max(0, baseP - discAmount);
                 resText.style.color = "var(--success)";
-                resText.innerText = `Kode promo aktif! Potongan Rp ${discAmount.toLocaleString()}`;
+                resText.innerText = `Potongan Rp ${discAmount.toLocaleString()}`;
                 updatePriceDisplay();
-            } else {
-                ardhanAlert("Maaf", "Kode promo tidak valid!");
-            }
-        } catch(e) {
-            console.error(e);
-        }
+            } else { ardhanAlert("Maaf", "Promo tidak valid!"); }
+        } catch(e) { console.error(e); }
     }
 
     function processPayment() {
         const id1 = document.getElementById('id1').value;
         const wa = document.getElementById('userWA').value;
         const sender = document.getElementById('senderName').value;
-        if(!id1 || !wa || !curN || !sender) return ardhanAlert("Oops!", "Lengkapi data termasuk Nama Pengirim!");
-        
-        updatePriceDisplay();
+        if(!id1 || !wa || !curN || !sender) return ardhanAlert("Eror", "Lengkapi semua data akun dan kontak terlebih dahulu!");
         document.getElementById('qrisModal').style.display = 'flex';
     }
 
     async function finishPayment() {
-        const id1 = document.getElementById('id1').value;
-        const id2 = document.getElementById('id2') ? `(${document.getElementById('id2').value})` : "";
-        const waUser = document.getElementById('userWA').value;
-        const emailUser = document.getElementById('userEmail').value;
-        const sender = document.getElementById('senderName').value;
-        
         const orderData = {
             nama_payment: "QRIS",
-            player_id: id1 + id2,
-            game: curG,
-            paket: curN,
-            harga: curP,
-            whatsapp: waUser,
-            email: emailUser,
-            nama_pengirim: sender,
-            status: "Selesai Bayar",
-            waktu: new Date().toLocaleString()
+            player_id: document.getElementById('id1').value + (document.getElementById('id2') ? `(${document.getElementById('id2').value})` : ""),
+            game: curG, paket: curN, harga: curP,
+            whatsapp: document.getElementById('userWA').value,
+            email: document.getElementById('userEmail').value,
+            nama_pengirim: document.getElementById('senderName').value,
+            status: "Selesai Bayar", waktu: new Date().toLocaleString()
         };
-
         try {
             await db.collection("orders").add(orderData);
             closeModal();
-            ardhanAlert("Berhasil", "Pesanan anda akan segera di cek");
+            ardhanAlert("Berhasil", "Pesanan sedang dicek!");
             backToMenu();
-        } catch (e) {
-            ardhanAlert("Error", "Gagal menyimpan pesanan. Silakan coba lagi.");
-        }
+        } catch (e) { ardhanAlert("Eror", "Gagal mengirim pesanan. Silakan coba lagi."); }
     }
 
-    // --- JB & GRUP FIREBASE ---
+    // --- JB & GRUP LOGIC ---
     async function saveJB() {
         const id = document.getElementById('editJbId').value;
         const file = document.getElementById('jbInputImg').files[0];
         const game = document.getElementById('jbInputGame').value;
-        const desc = document.getElementById('jbInputDesc').value;
         const price = document.getElementById('jbInputPrice').value;
         const wa = document.getElementById('jbInputWA').value;
+
+        if(!game || !price || !wa) return ardhanAlert("Gagal", "Harap isi jenis game, harga, dan nomor WhatsApp!");
+
+        const userDoc = await db.collection("users").doc(auth.currentUser.uid).get();
+        const userData = userDoc.data();
+
+        const data = {
+            game: game,
+            desc: document.getElementById('jbInputDesc').value || "No Desc",
+            price: parseInt(price),
+            wa: wa,
+            seller: userData.nama,
+            seller_photo: userData.photo || 'https://www.w3schools.com/howto/img_avatar.png',
+            seller_email: auth.currentUser.email,
+            seller_uid: auth.currentUser.uid,
+            likes: 0,
+            timestamp: firebase.firestore.FieldValue.serverTimestamp()
+        };
         
-        if(!game || !price || !wa) return alert("Lengkapi data!");
-
-        const processSave = async (imgData) => {
-            const data = {
-                game: game,
-                desc: desc || "No Desc",
-                price: parseInt(price),
-                wa: wa,
-                seller: auth.currentUser.displayName,
-                seller_email: auth.currentUser.email,
-                timestamp: firebase.firestore.FieldValue.serverTimestamp()
-            };
+        const saveToDb = async (imgData) => {
             if(imgData) data.img = imgData;
-
-            try {
-                if(id) {
-                    await db.collection("jb_accounts").doc(id).update(data);
-                    ardhanToast("Berhasil Terupdate!");
-                } else {
-                    if(!imgData) return alert("Sertakan screenshot!");
-                    await db.collection("jb_accounts").add(data);
-                    ardhanToast("Terposting!");
-                }
-                closeModals();
-                filterJB();
-            } catch (e) {
-                alert("Gagal menyimpan!");
-            }
+            if(id) await db.collection("jb_accounts").doc(id).update(data);
+            else { if(!imgData) return ardhanAlert("Foto Wajib", "Harap lampirkan foto screenshot akun!"); await db.collection("jb_accounts").add(data); }
+            closeModals(); filterJB(); 
+            const activeEmail = viewingOtherUid ? (await db.collection("users").doc(viewingOtherUid).get()).data().email : auth.currentUser.email;
+            loadPostsByUser(activeEmail);
         };
 
-        if(file) {
-            const reader = new FileReader();
-            reader.onload = (e) => processSave(e.target.result);
-            reader.readAsDataURL(file);
-        } else {
-            processSave(null);
-        }
+        if(file) { const reader = new FileReader(); reader.onload = (e) => saveToDb(e.target.result); reader.readAsDataURL(file); }
+        else saveToDb(null);
     }
-
-    async function deleteJB(id) {
-        ardhanConfirm("Hapus postingan ini secara permanen?", async (confirmed) => {
-            if(confirmed) {
-                await db.collection("jb_accounts").doc(id).delete();
-                ardhanToast("Dihapus!");
-                filterJB();
-            }
-        });
-    }
-
-    function editJB(id, data) {
-        document.getElementById('editJbId').value = id;
-        document.getElementById('jbModalTitle').innerText = "Edit Akun Game";
-        document.getElementById('btnSaveJB').innerText = "SIMPAN PERUBAHAN";
-        document.getElementById('jbInputGame').value = data.game;
-        document.getElementById('uploadGameText').innerText = data.game;
-        document.getElementById('jbInputDesc').value = data.desc;
-        document.getElementById('jbInputPrice').value = data.price;
-        document.getElementById('jbInputWA').value = data.wa;
-        document.getElementById('jbImgPreview').innerHTML = `<img src="${data.img}" style="width:100px; border-radius:10px;">`;
-        document.getElementById('modalAddJB').style.display = 'block';
-    }
-
-    db.collection("jb_accounts").orderBy("timestamp", "desc").onSnapshot(snap => {
-        filterJB();
-    });
 
     async function saveGrup() {
         const id = document.getElementById('editGrupId').value;
         const f = document.getElementById('grupInputImg').files[0];
-        const n = document.getElementById('grupInputName').value;
-        const l = document.getElementById('grupInputLink').value;
-        const d = document.getElementById('grupInputDesc').value;
-        
-        if(!n || !l) return alert("Lengkapi!");
+        const name = document.getElementById('grupInputName').value;
+        const link = document.getElementById('grupInputLink').value;
 
-        const processSave = async (imgData) => {
-            const data = {
-                name: n,
-                link: l,
-                desc: d || "",
-                owner_email: auth.currentUser.email,
-                timestamp: firebase.firestore.FieldValue.serverTimestamp()
-            };
-            if(imgData) data.img = imgData;
+        if(!name || !link) return ardhanAlert("Gagal", "Harap isi nama grup dan link grup!");
 
-            try {
-                if(id) {
-                    await db.collection("groups").doc(id).update(data);
-                    ardhanToast("Grup Terupdate!");
-                } else {
-                    if(!imgData) return alert("Sertakan Gambar!");
-                    await db.collection("groups").add(data);
-                    ardhanToast("Grup Ditambahkan!");
-                }
-                closeModals();
-                filterGrup();
-            } catch (e) {
-                alert("Gagal menyimpan!");
-            }
+        const data = {
+            name: name,
+            link: link,
+            desc: document.getElementById('grupInputDesc').value || "",
+            owner_email: auth.currentUser.email,
+            owner_uid: auth.currentUser.uid,
+            likes: 0,
+            timestamp: firebase.firestore.FieldValue.serverTimestamp()
         };
-
-        if(f) {
-            const r = new FileReader();
-            r.onload = e => processSave(e.target.result);
-            r.readAsDataURL(f);
-        } else {
-            processSave(null);
-        }
+        const saveToDb = async (imgData) => {
+            if(imgData) data.img = imgData;
+            if(id) await db.collection("groups").doc(id).update(data);
+            else { if(!imgData) return ardhanAlert("Foto Wajib", "Harap lampirkan foto grup!"); await db.collection("groups").add(data); }
+            closeModals(); filterGrup(); 
+            const activeEmail = viewingOtherUid ? (await db.collection("users").doc(viewingOtherUid).get()).data().email : auth.currentUser.email;
+            loadPostsByUser(activeEmail);
+        };
+        if(f) { const r = new FileReader(); r.onload = e => saveToDb(e.target.result); r.readAsDataURL(f); }
+        else saveToDb(null);
     }
 
-    async function deleteGrup(id) {
-        ardhanConfirm("Hapus grup ini dari list?", async (confirmed) => {
-            if(confirmed) {
-                await db.collection("groups").doc(id).delete();
-                ardhanToast("Grup Dihapus!");
-                filterGrup();
-            }
-        });
+    async function deleteJB(id) { 
+        ardhanConfirm("Hapus postingan?", async (c) => { 
+            if(c) { 
+                await db.collection("jb_accounts").doc(id).delete(); 
+                filterJB(); 
+                const activeEmail = viewingOtherUid ? (await db.collection("users").doc(viewingOtherUid).get()).data().email : auth.currentUser.email;
+                loadPostsByUser(activeEmail); 
+            } 
+        }); 
+    }
+    async function deleteGrup(id) { 
+        ardhanConfirm("Hapus grup?", async (c) => { 
+            if(c) { 
+                await db.collection("groups").doc(id).delete(); 
+                filterGrup(); 
+                const activeEmail = viewingOtherUid ? (await db.collection("users").doc(viewingOtherUid).get()).data().email : auth.currentUser.email;
+                loadPostsByUser(activeEmail); 
+            } 
+        }); 
     }
 
-    function editGrup(id, data) {
-        document.getElementById('editGrupId').value = id;
-        document.getElementById('grupModalTitle').innerText = "Edit Grup";
-        document.getElementById('btnSaveGrup').innerText = "SIMPAN PERUBAHAN";
-        document.getElementById('grupInputName').value = data.name;
-        document.getElementById('grupInputLink').value = data.link;
-        document.getElementById('grupInputDesc').value = data.desc;
-        document.getElementById('grupImgPreview').innerHTML = `<img src="${data.img}" style="width:60px; border-radius:10px;">`;
-        document.getElementById('modalAddGrup').style.display = 'block';
-    }
-
-    db.collection("groups").orderBy("timestamp", "desc").onSnapshot(snap => {
-        filterGrup();
-    });
-
-    function filterJB() {
+    // --- FILTER JB DENGAN SINKRON CENTANG ---
+    async function filterJB() {
         const p = parseInt(document.getElementById('searchJbPrice').value);
         const g = document.getElementById('searchJbGame').value;
         const area = document.getElementById('jbDisplayArea');
         if(!area) return;
-
-        db.collection("jb_accounts").orderBy("timestamp", "desc").get().then(snap => {
+        
+        db.collection("jb_accounts").orderBy("likes", "desc").get().then(async (snap) => {
             area.innerHTML = "";
-            let hasContent = false;
-            snap.forEach(doc => {
-                const item = doc.data();
-                const id = doc.id;
-                const isAdminPost = (item.seller_email === adminEmail);
-                if (activeJbSubTab === 'admin' && !isAdminPost) return;
-                if (activeJbSubTab === 'public' && isAdminPost) return;
-                if (g !== 'all' && item.game !== g) return;
-                if (p && item.price > p) return;
-                hasContent = true;
+            for (let doc of snap.docs) {
+                const item = doc.data(); const id = doc.id;
+                const isAdmin = (item.seller_email === adminEmail);
+                if (activeJbSubTab === 'admin' && !isAdmin) continue;
+                if (activeJbSubTab === 'public' && isAdmin) continue;
+                if (g !== 'all' && item.game !== g) continue;
+                if (p && item.price > p) continue;
+                
                 const isOwner = auth.currentUser && (auth.currentUser.email === item.seller_email);
-                let editBtn = isOwner ? `<button class="btn-edit-item" onclick='editJB("${id}", ${JSON.stringify(item).replace(/'/g, "&apos;")})'>Edit</button>` : "";
-                let delBtn = isOwner ? `<button class="btn-delete-post" onclick="deleteJB('${id}')">X</button>` : "";
-                area.innerHTML += `<div class="jb-card">${delBtn}${editBtn}<img src="${item.img}"><div class="jb-info"><div class="jb-game">${item.game}</div><div class="jb-desc">${item.desc}</div><div class="jb-price">Rp ${item.price.toLocaleString()}</div><a href="https://wa.me/${item.wa}" class="jb-btn-wa">CHAT PENJUAL</a></div></div>`;
-            });
-            if(!hasContent) area.innerHTML = `<center><p style='color:#94a3b8; font-size:0.8rem; grid-column: 1/-1;'>Belum ada postingan di kategori ini.</p></center>`;
+
+                // Sinkron centang biru di list JB
+                const vDocJB = await db.collection("verified_users").doc(item.seller).get();
+                const tickHtmlJB = vDocJB.exists ? ' <img src="centang.png" class="blue-tick" style="width:10px; height:10px;">' : '';
+                
+                area.innerHTML += `
+                <div class="jb-card">
+                    <div class="seller-badge-mini" onclick="viewOtherProfile('${item.seller_uid}')">
+                        <img src="${item.seller_photo || 'https://www.w3schools.com/howto/img_avatar.png'}" class="seller-pfp-mini">
+                        <span class="seller-name-mini">${item.seller}${tickHtmlJB}</span>
+                    </div>
+                    ${isOwner ? `<button class="btn-delete-post" onclick="deleteJB('${id}')">X</button>` : ""}
+                    <img src="${item.img}" class="main-img">
+                    <div class="jb-info">
+                        <div class="jb-game">${item.game}</div>
+                        <div class="jb-desc">${item.desc}</div>
+                        <div class="jb-price">Rp ${item.price.toLocaleString()}</div>
+                        <a href="https://wa.me/${item.wa}" class="jb-btn-wa">HUBUNGI PENJUAL</a>
+                        <button class="jb-btn-chat" onclick="openChat('${item.seller_uid}', '${item.seller}', '${item.seller_photo}')">CHAT PENJUAL</button>
+                        <div class="like-container">
+                            <button class="btn-like" onclick="toggleLike('${id}', 'jb_accounts', '${item.seller_uid}')">
+                                <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l8.72-8.72 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+                                <span class="like-count">${item.likes || 0}</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>`;
+            }
         });
     }
 
@@ -1380,46 +1950,51 @@
         const search = document.getElementById('searchGrupName').value.toLowerCase();
         const area = document.getElementById('grupDisplayArea');
         if(!area) return;
-
-        db.collection("groups").orderBy("timestamp", "desc").get().then(snap => {
+        
+        db.collection("groups").orderBy("likes", "desc").get().then(snap => {
             area.innerHTML = "";
-            let hasContent = false;
             snap.forEach(doc => {
-                const item = doc.data();
-                const id = doc.id;
-                const isAdminPost = (item.owner_email === adminEmail);
-                if (activeGrupSubTab === 'admin' && !isAdminPost) return;
-                if (activeGrupSubTab === 'public' && isAdminPost) return;
+                const item = doc.data(); const id = doc.id;
+                const isAdmin = (item.owner_email === adminEmail);
+                if (activeGrupSubTab === 'admin' && !isAdmin) return;
+                if (activeGrupSubTab === 'public' && isAdmin) return;
                 if(search && !item.name.toLowerCase().includes(search)) return;
-                hasContent = true;
+                
                 const isOwner = auth.currentUser && (auth.currentUser.email === item.owner_email);
-                let editBtn = isOwner ? `<button class="btn-edit-grup" onclick='editGrup("${id}", ${JSON.stringify(item).replace(/'/g, "&apos;")})'>Edit</button>` : "";
-                let delBtn = isOwner ? `<button class="btn-delete-grup-post" onclick="deleteGrup('${id}')">Hapus</button>` : "";
-                area.innerHTML += `<div class="grup-item"><img src="${item.img}" class="grup-img"><div style="flex:1"><b>${item.name}</b><br><small style="color:#94a3b8">${item.desc || ''}</small></div><div style="display:flex; gap:5px"><a href="${item.link}" target="_blank" class="btn-join">GABUNG</a>${editBtn}${delBtn}</div></div>`;
+                
+                area.innerHTML += `
+                <div class="grup-item">
+                    <img src="${item.img}" class="grup-img">
+                    <div style="flex:1">
+                        <b>${item.name}</b><br>
+                        <div class="like-container" style="border:none; padding:0; margin-top:5px">
+                            <button class="btn-like" onclick="toggleLike('${id}', 'groups', '${item.owner_uid}')">
+                                <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l8.72-8.72 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+                                <span class="like-count">${item.likes || 0}</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div style="display:flex; flex-direction:column; gap:5px">
+                        <a href="${item.link}" target="_blank" class="btn-join">GABUNG</a>
+                        ${isOwner ? `<button class="btn-delete-grup-post" onclick="deleteGrup('${id}')" style="font-size:0.6rem; padding:4px">Hapus</button>` : ""}
+                    </div>
+                </div>`;
             });
-            if(!hasContent) area.innerHTML = `<center><p style='color:#94a3b8; font-size:0.8rem;'>Belum ada grup di kategori ini.</p></center>`;
         });
     }
 
+    function checkAuthAndOpenModal() {
+        if (!auth.currentUser) return ardhanAlert("Akses Ditolak", "Login dlu bos!");
+        openAddModal();
+    }
+
     function openAddModal() { 
-        document.getElementById('jbImgPreview').innerHTML = "";
-        document.getElementById('grupImgPreview').innerHTML = "";
-        if(currentView === 'jb') {
-            document.getElementById('modalAddJB').style.display = 'block'; 
-            document.getElementById('modalAddGrup').style.display = 'none';
-        } else if(currentView === 'grup') {
-            document.getElementById('modalAddGrup').style.display = 'block'; 
-            document.getElementById('modalAddJB').style.display = 'none';
-        } 
+        if(currentView === 'jb') document.getElementById('modalAddJB').style.display = 'block'; 
+        else if(currentView === 'grup') document.getElementById('modalAddGrup').style.display = 'block'; 
     }
     
-    function closeModals() { 
-        document.querySelectorAll('.form-modal').forEach(m => m.style.display = 'none'); 
-    }
-    
-    function closeModal() { 
-        document.getElementById('qrisModal').style.display = 'none'; 
-    }
+    function closeModals() { document.querySelectorAll('.form-modal').forEach(m => m.style.display = 'none'); }
+    function closeModal() { document.getElementById('qrisModal').style.display = 'none'; }
     
     function backToMenu() {
         document.getElementById('sectionHome').style.display = 'block';
@@ -1430,91 +2005,240 @@
         document.getElementById('mainOrderForm').style.display = 'none';
         document.querySelectorAll('.nav-tab-btn').forEach(b => b.classList.remove('active'));
         document.getElementById('btnTopupTab').classList.add('active');
-        currentView = 'topup';
-        initSlider();
+        currentView = 'topup'; initSlider();
     }
     
-    window.onclick = e => { 
-        if (!e.target.closest('.custom-select-wrapper')) {
-            document.querySelectorAll('.custom-options').forEach(o => o.classList.remove('show')); 
-        }
-    }
+    // --- CHAT LOGIC ---
+    async function openChat(targetUid, targetName, targetImg) {
+        if(!auth.currentUser) return openAuthModal();
+        const myUid = auth.currentUser.uid;
+        if(myUid === targetUid) return ardhanAlert("Info", "Kamu tidak bisa chat diri sendiri!");
 
-    // --- FUNGSI PEMBERSIH GRUP TES (HAPUS GRUP BERNAMA 'L') ---
-    async function cleanTestGroups() {
-        const snap = await db.collection("groups").where("name", "==", "L").get();
-        if(!snap.empty) {
-            snap.forEach(doc => {
-                db.collection("groups").doc(doc.id).delete();
-            });
-            console.log("Grup tes 'L' berhasil dibersihkan.");
-        }
-    }
-    // Jalankan pembersihan satu kali saat web dibuka
-    cleanTestGroups();
-    
-    // --- AUTH LOGIC (MANUAL & GOOGLE) ---
-    function toggleAuthMode() {
-        isRegisterMode = !isRegisterMode;
-        document.getElementById('authTitle').innerText = isRegisterMode ? "Daftar Akun Baru" : "Login Ke Ardhan Shop";
-        document.getElementById('btnAuthMain').innerText = isRegisterMode ? "DAFTAR SEKARANG" : "LOGIN SEKARANG";
-        document.getElementById('regoFields').style.display = isRegisterMode ? "block" : "none";
-        document.getElementById('switchAuthText').innerText = isRegisterMode ? "Sudah punya akun? Login di sini" : "Belum punya akun? Daftar di sini";
-    }
-
-    function openAuthModal() {
-        document.getElementById('authModal').style.display = 'block';
-    }
-
-    async function handleAuth() {
-        const email = document.getElementById('authEmail').value;
-        const pass = document.getElementById('authPassword').value;
+        activeChatRoom = (myUid < targetUid) ? `${myUid}_${targetUid}` : `${targetUid}_${myUid}`;
         
-        if(!email || !pass) return ardhanAlert("Oops", "Email dan Sandi harus diisi!");
+        document.getElementById('chatTargetName').innerText = targetName;
+        document.getElementById('chatTargetImg').src = targetImg || 'https://www.w3schools.com/howto/img_avatar.png';
+        document.getElementById('chatOverlay').style.display = 'flex';
+        
+        const myDoc = await db.collection("users").doc(myUid).get();
+        const myData = myDoc.data();
 
-        try {
-            if(isRegisterMode) {
-                const name = document.getElementById('regName').value;
-                const wa = document.getElementById('regWA').value;
-                if(!name || !wa) return ardhanAlert("Oops", "Nama dan WA wajib diisi!");
+        // Metadata Room menggunakan participants array
+        await db.collection("chats").doc(activeChatRoom).set({
+            participants: [myUid, targetUid],
+            lastUpdate: firebase.firestore.FieldValue.serverTimestamp(),
+            names: { [myUid]: myData.nama, [targetUid]: targetName },
+            photos: { [myUid]: myData.photo, [targetUid]: targetImg }
+        }, { merge: true });
 
-                const userCredential = await auth.createUserWithEmailAndPassword(email, pass);
-                await userCredential.user.updateProfile({ displayName: name });
-                await db.collection("users").doc(userCredential.user.uid).set({
-                    nama: name,
-                    whatsapp: wa,
-                    email: email,
-                    createdAt: new Date().toLocaleString()
-                });
-                ardhanToast("Pendaftaran Berhasil!");
-            } else {
-                await auth.signInWithEmailAndPassword(email, pass);
-                ardhanToast("Berhasil Login!");
-            }
-            closeModals();
-        } catch (error) {
-            ardhanAlert("Gagal", error.message);
-        }
+        loadMessages();
     }
 
-    function loginGoogle() {
-        const provider = new firebase.auth.GoogleAuthProvider();
-        auth.signInWithPopup(provider)
-            .then((result) => {
-                ardhanToast("Selamat Datang, " + result.user.displayName);
-                closeModals();
-            })
-            .catch(err => {
-                ardhanAlert("Error", err.message);
+    function loadMessages() {
+        if(chatUnsubscribe) chatUnsubscribe();
+        const area = document.getElementById('chatMessageArea');
+        chatUnsubscribe = db.collection("chats").doc(activeChatRoom).collection("messages")
+            .orderBy("timestamp", "asc")
+            .onSnapshot(snap => {
+                area.innerHTML = "";
+                snap.forEach(doc => {
+                    const m = doc.data();
+                    const isMe = m.sender === auth.currentUser.uid;
+                    const time = m.timestamp ? new Date(m.timestamp.seconds * 1000).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : '...';
+                    let content = m.text ? `<div>${m.text}</div>` : "";
+                    if(m.image) content += `<img src="${m.image}" class="msg-img" onclick="window.open('${m.image}')">`;
+                    area.innerHTML += `<div class="msg-bubble ${isMe ? 'msg-right' : 'msg-left'}">${isMe ? `<button class="btn-del-msg" onclick="deleteMessage('${doc.id}')">X</button>` : ""}${content}<span class="msg-time">${time}</span></div>`;
+                });
+                area.scrollTop = area.scrollHeight;
             });
     }
 
-    function logout() {
-        auth.signOut().then(() => {
-            ardhanToast("Berhasil Keluar");
-            document.getElementById('historyDisplayArea').innerHTML = '<center><p style="color: #94a3b8; font-size: 0.8rem;">Silakan Login atau masukkan nomor WA di menu pesanan untuk melihat riwayat.</p></center>';
+    async function sendChatText() {
+        const input = document.getElementById('chatInputField');
+        const text = input.value.trim();
+        if(!text || !activeChatRoom) return;
+
+        const myUid = auth.currentUser.uid;
+        const myDoc = await db.collection("users").doc(myUid).get();
+        const myData = myDoc.data();
+
+        // Cari UID Target dari ID Room
+        const targetUid = activeChatRoom.replace(myUid, "").replace("_", "");
+        const targetDoc = await db.collection("users").doc(targetUid).get();
+        const targetData = targetDoc.data();
+
+        await db.collection("chats").doc(activeChatRoom).collection("messages").add({
+            sender: myUid,
+            text: text,
+            timestamp: firebase.firestore.FieldValue.serverTimestamp()
+        });
+
+        // PAKSA Update Metadata Room agar terdeteksi real-time di Pesan Masuk
+        await db.collection("chats").doc(activeChatRoom).set({
+            lastUpdate: firebase.firestore.FieldValue.serverTimestamp(),
+            participants: [myUid, targetUid],
+            names: { [myUid]: myData.nama, [targetUid]: targetData.nama },
+            photos: { [myUid]: myData.photo, [targetUid]: targetData.photo }
+        }, { merge: true });
+
+        input.value = "";
+    }
+
+    async function sendChatImage(input) {
+        const file = input.files[0];
+        if(!file || !activeChatRoom) return;
+        
+        const myUid = auth.currentUser.uid;
+        const myDoc = await db.collection("users").doc(myUid).get();
+        const myData = myDoc.data();
+        const targetUid = activeChatRoom.replace(myUid, "").replace("_", "");
+        const targetDoc = await db.collection("users").doc(targetUid).get();
+        const targetData = targetDoc.data();
+
+        const reader = new FileReader();
+        reader.onload = async (e) => {
+            await db.collection("chats").doc(activeChatRoom).collection("messages").add({
+                sender: myUid,
+                image: e.target.result,
+                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            });
+            
+            await db.collection("chats").doc(activeChatRoom).set({
+                lastUpdate: firebase.firestore.FieldValue.serverTimestamp(),
+                participants: [myUid, targetUid],
+                names: { [myUid]: myData.nama, [targetUid]: targetData.nama },
+                photos: { [myUid]: myData.photo, [targetUid]: targetData.photo }
+            }, { merge: true });
+        };
+        reader.readAsDataURL(file);
+    }
+
+    function deleteMessage(msgId) {
+        ardhanConfirm("Hapus pesan ini?", async (c) => {
+            if(c) await db.collection("chats").doc(activeChatRoom).collection("messages").doc(msgId).delete();
         });
     }
+
+    function closeChat() {
+        document.getElementById('chatOverlay').style.display = 'none';
+        if(chatUnsubscribe) chatUnsubscribe();
+    }
+
+    function loadChatList() {
+        const area = document.getElementById('chatDisplayArea');
+        if(!auth.currentUser) return;
+
+        // Query metadata room menggunakan array-contains
+        db.collection("chats").where("participants", "array-contains", auth.currentUser.uid)
+            .orderBy("lastUpdate", "desc")
+            .onSnapshot(snap => {
+                if(snap.empty) {
+                    area.innerHTML = `<center><p style="color: #94a3b8; font-size: 0.8rem; margin-top:20px;">Belum ada percakapan aktif.</p></center>`;
+                    return;
+                }
+                area.innerHTML = "";
+                snap.forEach(doc => {
+                    const d = doc.data();
+                    const otherUid = d.participants.find(p => p !== auth.currentUser.uid);
+                    
+                    if(d.names && d.photos) {
+                        const otherName = d.names[otherUid] || "User";
+                        const otherPhoto = d.photos[otherUid] || 'https://www.w3schools.com/howto/img_avatar.png';
+                        area.innerHTML += `
+                            <div class="chat-list-item" onclick="openChat('${otherUid}', '${otherName}', '${otherPhoto}')">
+                                <img src="${otherPhoto}" class="chat-user-img">
+                                <div style="flex:1">
+                                    <div style="font-weight:bold; font-size:0.9rem;">${otherName}</div>
+                                    <div style="font-size:0.75rem; color:#94a3b8;">Ketuk untuk mengobrol...</div>
+                                </div>
+                            </div>`;
+                    }
+                });
+            }, err => {
+                console.log("Chat list error:", err);
+            });
+    }
+
+    async function clearAllHistory() {
+        ardhanConfirm("Hapus semua riwayat Berhasil?", async (c) => {
+            if(c) {
+                const wa = document.getElementById('userWA').value;
+                const email = auth.currentUser ? auth.currentUser.email : "";
+                let query = db.collection("success_orders");
+                if(email) query = query.where("email", "==", email);
+                else if(wa) query = query.where("whatsapp", "==", wa);
+                else return;
+                const snap = await query.get();
+                const batch = db.batch();
+                snap.forEach(doc => batch.delete(doc.ref));
+                await batch.commit();
+                ardhanToast("Riwayat Berhasil dihapus!");
+            }
+        });
+    }
+
+    // --- FIX REALTIME HISTORY SYNC ---
+    function loadHistoryByEmail(email) {
+        if(historyUnsubscribe) historyUnsubscribe();
+        historyUnsubscribe = db.collection("success_orders")
+            .where("email", "==", email)
+            .orderBy("confirm_at", "desc")
+            .onSnapshot(snap => {
+                renderHistoryUI(snap);
+            }, err => {
+                console.error("History Error:", err);
+                // Jika error index, tetap tampilkan riwayat tanpa order by
+                db.collection("success_orders").where("email", "==", email).onSnapshot(s => renderHistoryUI(s));
+            });
+    }
+
+    function loadHistoryByWA() {
+        const wa = document.getElementById('userWA').value;
+        if(wa.length > 5) {
+            if(historyUnsubscribe) historyUnsubscribe();
+            historyUnsubscribe = db.collection("success_orders")
+                .where("whatsapp", "==", wa)
+                .orderBy("confirm_at", "desc")
+                .onSnapshot(snap => {
+                    renderHistoryUI(snap);
+                }, err => {
+                    db.collection("success_orders").where("whatsapp", "==", wa).onSnapshot(s => renderHistoryUI(s));
+                });
+        }
+    }
+
+    function renderHistoryUI(snap) {
+        const area = document.getElementById('historyDisplayArea');
+        const btnClear = document.getElementById('btnClearHistory');
+        
+        if(!snap || snap.empty) {
+            area.innerHTML = '<center><p style="color: #94a3b8; font-size: 0.8rem; margin-top:20px;">Belum ada riwayat Berhasil.</p></center>';
+            btnClear.style.display = "none";
+            return;
+        }
+        
+        btnClear.style.display = "block";
+        area.innerHTML = `<p style="font-size: 0.7rem; color: #94a3b8; margin-bottom: 10px;">Total Riwayat Berhasil: ${snap.size}</p>`;
+        
+        snap.forEach(doc => {
+            const d = doc.data();
+            area.innerHTML += `
+                <div class="history-card">
+                    <div class="history-header">
+                        <span style="font-size: 0.8rem; font-weight: bold; color: var(--primary);">${d.game}</span>
+                        <span class="status-success">SUKSES</span>
+                    </div>
+                    <div style="font-size: 0.75rem; color: white;">
+                        <p>Produk: <b>${d.paket}</b></p>
+                        <p>Player ID: ${d.player_id}</p>
+                        <p>Harga: Rp ${parseInt(d.harga || 0).toLocaleString()}</p>
+                        <p style="font-size: 0.65rem; color: #94a3b8; margin-top: 5px;">Berhasil pada: ${d.confirm_at || d.waktu}</p>
+                    </div>
+                </div>`;
+        });
+    }
+
+    window.onclick = e => { if (!e.target.closest('.custom-select-wrapper')) document.querySelectorAll('.custom-options').forEach(o => o.classList.remove('show')); }
 </script>
 </body>
 </html>
